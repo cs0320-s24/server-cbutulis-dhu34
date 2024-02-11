@@ -2,6 +2,7 @@ package edu.brown.cs.student.main.server;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
+import edu.brown.cs.student.main.CSVDataStorage.CSVData;
 import edu.brown.cs.student.main.Parsing.Parser;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,6 +21,7 @@ import spark.Route;
  */
 // TODO 2: Check out this Handler. What does it do right now? How is the menu formed (deserialized)?
 public class CSVHandler implements Route {
+  private CSVData csv;
 
   /**
    * Constructor accepts some shared state
@@ -46,12 +48,16 @@ public class CSVHandler implements Route {
     // one you want!
     // Get Query parameters, can be used to make your search more specific
     String filePath = request.queryParams("filePath");
+    String hasHeader = request.queryParams("hasHeader");
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
     // Iterate through the soups in the menu and return the first one
 
     try {
       Parser parser = new Parser(new FileReader(filePath));
+      boolean header = hasHeader.equals("true");
+      this.csv = new CSVData(parser.parse(header), header); //TODO: handle factory failure and io exception
+
       return new LoadSuccessResponse(responseMap).serialize();
     } catch (FileNotFoundException e) {
       System.err.println(e.getMessage());
@@ -102,5 +108,9 @@ public class CSVHandler implements Route {
       Moshi moshi = new Moshi.Builder().build();
       return moshi.adapter(LoadFailureResponse.class).toJson(this);
     }
+  }
+
+  public CSVData getCsv() {
+    return csv;
   }
 }
