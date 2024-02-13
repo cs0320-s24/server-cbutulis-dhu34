@@ -35,7 +35,7 @@ public class CensusAPIUtilities {
    * @return
    * @throws IOException
    */
-  public static Map<String, String> deserializeStateCodes(String jsonList) throws IOException {
+  public static List<List<String>> deserializeStateCodes(String jsonList) throws IOException {
     List<Soup> menu = new ArrayList<>();
     try {
       Moshi moshi = new Moshi.Builder().build();
@@ -47,13 +47,12 @@ public class CensusAPIUtilities {
       // Moshi docs'
       // template by creating a Type object corresponding to List<Ingredient>:
 
-      Type listType = Types.newParameterizedType(Map.class, String.class, String.class);
-      JsonAdapter<Map<String, String>> adapter = moshi.adapter(listType);
+      Type listType = Types.newParameterizedType(List.class, List.class, String.class);
+      JsonAdapter<List<List<String>>> adapter = moshi.adapter(listType);
 
+      List<List<String>> deserializedMenu = adapter.fromJson(jsonList);
 
-      Map<String, String> deserializedStateCodes = adapter.fromJson(jsonList);
-
-      return deserializedStateCodes;
+      return deserializedMenu;
     }
     // From the Moshi Docs (https://github.com/square/moshi):
     //   "Moshi always throws a standard java.io.IOException if there is an error reading the JSON
