@@ -2,6 +2,7 @@ package edu.brown.cs.student.main.server;
 
 import static spark.Spark.after;
 
+import edu.brown.cs.student.main.CSVDataStorage.CSVData;
 import edu.brown.cs.student.main.soup.Soup;
 import edu.brown.cs.student.main.soup.SoupAPIUtilities;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class Server {
     // Setting up the handler for the GET /order and /activity endpoints
     CSVHandler csvHandler = new CSVHandler();
     Spark.get("loadcsv", csvHandler);
-    Spark.get("searchcsv", new SearchHandler(csvHandler.getCsv()));
+    Spark.get("searchcsv", new SearchHandler(csvHandler));
     // Spark.get("activity", new ActivityHandler());
     Spark.init();
     Spark.awaitInitialization();

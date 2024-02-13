@@ -22,14 +22,14 @@ import spark.Route;
  */
 // TODO 2: Check out this Handler. What does it do right now? How is the menu formed (deserialized)?
 public class SearchHandler implements Route {
-    private CSVData csv;
+    private CSVHandler csvHandler;
 
     /**
      * Constructor accepts some shared state
      *
      */
-    public SearchHandler(CSVData data) {
-        this.csv = data;
+    public SearchHandler(CSVHandler handler) {
+        this.csvHandler = handler;
     }
 
     /**
@@ -45,7 +45,7 @@ public class SearchHandler implements Route {
      * @throws Exception This is part of the interface; we don't have to throw anything.
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         // TODO 2: Right now, we only serialize the first soup, let's make it so you can choose which
         // one you want!
         // Get Query parameters, can be used to make your search more specific
@@ -55,7 +55,7 @@ public class SearchHandler implements Route {
         Map<String, Object> responseMap = new HashMap<>();
         // Iterate through the soups in the menu and return the first one
 
-        responseMap.put("result", this.csv.getTarget(target));
+        responseMap.put("result", this.csvHandler.getCsv().getTarget(target));
         System.out.println(responseMap);
         return new CSVHandler.LoadSuccessResponse(responseMap).serialize();
     }
