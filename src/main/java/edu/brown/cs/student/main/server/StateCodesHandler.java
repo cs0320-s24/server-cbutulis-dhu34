@@ -22,7 +22,7 @@ import spark.Route;
 // TODO 1: Check out this Handler. How can we make it only get activities based on participant #
 // We can use /api/activity?participants=:participants
 // See Documentation here: https://www.boredapi.com/documentation
-public class ActivityHandler implements Route {
+public class StateCodesHandler implements Route {
   /**
    * This handle method needs to be filled by any class implementing Route. When the path set in
    * edu.brown.cs.examples.moshiExample.server.Server gets accessed, it will fire the handle method.
@@ -43,19 +43,19 @@ public class ActivityHandler implements Route {
     // ex. http://localhost:3232/activity?participants=num
     Set<String> params = request.queryParams();
     //     System.out.println(params);
-    String participants = request.queryParams("participants");
+//    String participants = request.queryParams("participants");
     //     System.out.println(participants);
 
     // Creates a hashmap to store the results of the request
     Map<String, Object> responseMap = new HashMap<>();
     try {
       // Sends a request to the API and receives JSON back
-      String activityJson = this.sendRequest(Integer.parseInt(participants));
+      String activityJson = this.sendRequest("NAME", "state:*");
       // Deserializes JSON into an Activity
-      Activity activity = ActivityAPIUtilities.deserializeActivity(activityJson);
+//      Activity activity = ActivityAPIUtilities.deserializeActivity(activityJson);
       // Adds results to the responseMap
       responseMap.put("result", "success");
-      responseMap.put("activity", activity);
+      responseMap.put("activity", activityJson);
       return responseMap;
     } catch (Exception e) {
       e.printStackTrace();
@@ -67,14 +67,14 @@ public class ActivityHandler implements Route {
     return responseMap;
   }
 
-  private String sendRequest(int num) throws URISyntaxException, IOException, InterruptedException {
+  private String sendRequest(String get, String state) throws URISyntaxException, IOException, InterruptedException {
     // Build a request to this BoredAPI. Try out this link in your browser, what do you see?
     // TODO 1: Looking at the documentation, how can we add to the URI to query based
 
     // on participant number?
     HttpRequest buildBoredApiRequest =
         HttpRequest.newBuilder()
-            .uri(new URI("http://www.boredapi.com/api/activity?participants=" + num))
+            .uri(new URI("https://api.census.gov/data/2010/dec/sf1?get=" + get + "&for=" + state))
             .GET()
             .build();
 
