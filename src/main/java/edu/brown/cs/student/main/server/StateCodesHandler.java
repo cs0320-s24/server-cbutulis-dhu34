@@ -55,7 +55,7 @@ public class StateCodesHandler implements Route {
 //      Activity activity = ActivityAPIUtilities.deserializeActivity(activityJson);
       // Adds results to the responseMap
       responseMap.put("result", "success");
-      responseMap.put("activity", activityJson);
+      responseMap.put("activity", CensusAPIUtilities.deserializeStateCodes(activityJson));
       return responseMap;
     } catch (Exception e) {
       e.printStackTrace();

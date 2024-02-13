@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class contains utility methods for handling soup objects and Json-encoded soup objects.
@@ -34,7 +35,7 @@ public class CensusAPIUtilities {
    * @return
    * @throws IOException
    */
-  public static HashMap<String, Integer> deserializeStateCodes(String jsonList) throws IOException {
+  public static Map<String, String> deserializeStateCodes(String jsonList) throws IOException {
     List<Soup> menu = new ArrayList<>();
     try {
       Moshi moshi = new Moshi.Builder().build();
@@ -45,10 +46,12 @@ public class CensusAPIUtilities {
       // Building libraries that use them is outside the scope of this class, but we'll follow the
       // Moshi docs'
       // template by creating a Type object corresponding to List<Ingredient>:
-      Type listType = Types.newParameterizedType(HashMap.class, String.class, Integer.class);
-      JsonAdapter<HashMap<String, Integer>> adapter = moshi.adapter(listType);
 
-      HashMap<String, Integer> deserializedStateCodes = adapter.fromJson(jsonList);
+      Type listType = Types.newParameterizedType(Map.class, String.class, String.class);
+      JsonAdapter<Map<String, String>> adapter = moshi.adapter(listType);
+
+
+      Map<String, String> deserializedStateCodes = adapter.fromJson(jsonList);
 
       return deserializedStateCodes;
     }
