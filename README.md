@@ -11,3 +11,16 @@
 # Tests
 
 # How to
+
+TODO:
+-add exception if invalid args to endpoint
+-clean up everything
+-document
+-finish this readme
+-refactor into better packages
+
+Testing Requests:
+http://localhost:3232/broadband?state=California&county=Orange%20County,%20California
+http://localhost:3232/loadcsv
+http://localhost:3232/viewcsv
+http://localhost:3232/searchcsv?target=Black
