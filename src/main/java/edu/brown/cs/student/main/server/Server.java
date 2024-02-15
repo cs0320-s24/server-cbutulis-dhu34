@@ -65,8 +65,7 @@ public class Server {
     Spark.get("searchcsv", new SearchHandler(csvHandler));
     Spark.get("viewcsv", new ViewHandler(csvHandler));
 
-    Spark.get("statecodes", new StateCodesHandler());
-    Spark.get("countycodes", new CountyCodesHandler());
+    System.out.println(Init.getStateCodes());
 
     // Spark.get("activity", new ActivityHandler());
     Spark.init();
