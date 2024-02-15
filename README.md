@@ -18,6 +18,7 @@ TODO:
 -document
 -finish this readme
 -refactor into better packages
+-take into account small stuff like Bristol, won't always have a think to match
 
 Testing Requests:
 http://localhost:3232/broadband?state=California&county=Orange%20County,%20California

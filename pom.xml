@@ -54,6 +54,11 @@
       <artifactId>spark-core</artifactId>
       <version>2.9.3</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>31.1-jre</version>
+    </dependency>
     <!-- This is a library that is requested by spark to assist in debug logging
          This particular implementation suppresses a lot of the logging to avoid
          clogging the console.
