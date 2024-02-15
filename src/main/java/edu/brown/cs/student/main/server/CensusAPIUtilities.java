@@ -35,7 +35,7 @@ public class CensusAPIUtilities {
    * @return
    * @throws IOException
    */
-  public static List<List<String>> deserializeStateCodes(String jsonList) throws IOException {
+  public static HashMap<String, Integer> deserializeStateCodes(String jsonList) throws IOException {
     List<Soup> menu = new ArrayList<>();
     try {
       Moshi moshi = new Moshi.Builder().build();
@@ -52,7 +52,15 @@ public class CensusAPIUtilities {
 
       List<List<String>> deserializedMenu = adapter.fromJson(jsonList);
 
-      return deserializedMenu;
+      HashMap<String, Integer> deserializedHashMap = new HashMap<>();
+
+      // Turn it into a HM
+      for(int i=1; i<deserializedMenu.size(); i++) {
+        List<String> curr = deserializedMenu.get(i);
+        deserializedHashMap.put(curr.get(0),Integer.parseInt(curr.get(1)));
+      }
+
+      return deserializedHashMap;
     }
     // From the Moshi Docs (https://github.com/square/moshi):
     //   "Moshi always throws a standard java.io.IOException if there is an error reading the JSON
