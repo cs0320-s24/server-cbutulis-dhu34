@@ -35,7 +35,7 @@ public class CensusAPIUtilities {
    * @return
    * @throws IOException
    */
-  public static HashMap<String, Integer> deserializeStateCodes(String jsonList) throws IOException {
+  public static HashMap<String, String> deserializeStateCodes(String jsonList) throws IOException {
     List<Soup> menu = new ArrayList<>();
     try {
       Moshi moshi = new Moshi.Builder().build();
@@ -52,12 +52,12 @@ public class CensusAPIUtilities {
 
       List<List<String>> deserializedMenu = adapter.fromJson(jsonList);
 
-      HashMap<String, Integer> deserializedHashMap = new HashMap<>();
+      HashMap<String, String> deserializedHashMap = new HashMap<>();
 
       // Turn it into a HM
       for(int i=1; i<deserializedMenu.size(); i++) {
         List<String> curr = deserializedMenu.get(i);
-        deserializedHashMap.put(curr.get(0),Integer.parseInt(curr.get(1)));
+        deserializedHashMap.put(curr.get(0),curr.get(1));
       }
 
       return deserializedHashMap;
@@ -77,7 +77,7 @@ public class CensusAPIUtilities {
     }
   }
 
-  public static HashMap<String, Integer> deserializeCountyCodes(String jsonList) throws IOException {
+  public static HashMap<String, String> deserializeCountyCodes(String jsonList) throws IOException {
     List<Soup> menu = new ArrayList<>();
     try {
       Moshi moshi = new Moshi.Builder().build();
@@ -94,12 +94,12 @@ public class CensusAPIUtilities {
 
       List<List<String>> deserializedMenu = adapter.fromJson(jsonList);
 
-      HashMap<String, Integer> deserializedHashMap = new HashMap<>();
+      HashMap<String, String> deserializedHashMap = new HashMap<>();
 
       // Turn it into a HM
       for(int i=1; i<deserializedMenu.size(); i++) {
         List<String> curr = deserializedMenu.get(i);
-        deserializedHashMap.put(curr.get(0),Integer.parseInt(curr.get(2)));
+        deserializedHashMap.put(curr.get(0),(curr.get(2)));
       }
 
       return deserializedHashMap;

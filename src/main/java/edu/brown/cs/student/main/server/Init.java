@@ -13,7 +13,7 @@ import spark.Request;
 import spark.Response;
 
 public class Init {
-  public static HashMap<String, Integer> getCountyCodes() {
+  public static HashMap<String, String> getCountyCodes() {
 
     // Creates a hashmap to store the results of the request
     Map<String, Object> responseMap = new HashMap<>();
@@ -31,7 +31,7 @@ public class Init {
     return null;
   }
 
-  public static HashMap<String, Integer> getStateCodes() {
+  public static HashMap<String, String> getStateCodes() {
     // Creates a hashmap to store the results of the request
     Map<String, Object> responseMap = new HashMap<>();
     try {
@@ -66,8 +66,8 @@ public class Init {
 
     // What's the difference between these two lines? Why do we return the body? What is useful from
     // the raw response (hint: how can we use the status of response)?
-    System.out.println(sentBoredApiResponse);
-    System.out.println(sentBoredApiResponse.body());
+//    System.out.println(sentBoredApiResponse);
+//    System.out.println(sentBoredApiResponse.body());
 
     return sentBoredApiResponse.body();
 
