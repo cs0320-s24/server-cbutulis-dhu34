@@ -4,7 +4,6 @@ import static spark.Spark.after;
 
 import edu.brown.cs.student.main.soup.Soup;
 import edu.brown.cs.student.main.soup.SoupAPIUtilities;
-import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import spark.Spark;
@@ -66,10 +65,8 @@ public class Server {
     Spark.get("searchcsv", new SearchHandler(csvHandler));
     Spark.get("viewcsv", new ViewHandler(csvHandler));
 
-//    StateCodesHandler handler = new StateCodesHandler();
-//    handler.send
-//    System.out.println(CensusAPIUtilities.deserializeStateCodes());
     Spark.get("statecodes", new StateCodesHandler());
+    Spark.get("countycodes", new CountyCodesHandler());
 
     // Spark.get("activity", new ActivityHandler());
     Spark.init();
