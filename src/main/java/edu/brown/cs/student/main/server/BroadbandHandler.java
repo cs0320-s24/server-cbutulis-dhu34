@@ -7,11 +7,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class BroadbandHandler implements Route {
     private HashMap<String, String> stateCodes;
@@ -39,8 +42,19 @@ public class BroadbandHandler implements Route {
             // Deserializes JSON into an Activity
 //      Activity activity = ActivityAPIUtilities.deserializeActivity(activityJson);
             // Adds results to the responseMap
-            responseMap.put("result", "success");
-            responseMap.put("broadband", broadbandJson);
+
+            List<List<String>> result = CensusAPIUtilities.deserializeBroadbandInfo(broadbandJson);
+            result.get(0).set(0, "broadband access");
+            result.get(1).set(0, result.get(1).get(0)+"%");
+            result.get(1).set(1, stateName);
+            result.get(1).set(2, countyName);
+
+            responseMap.put("result", result);
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+
+            responseMap.put("timestamp", dtf.format(now));
             return responseMap;
         } catch (Exception e) {
             e.printStackTrace();
