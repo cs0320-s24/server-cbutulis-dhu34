@@ -3,6 +3,7 @@ package edu.brown.cs.student.main.handlers;
 import edu.brown.cs.student.main.csvdatastorage.CSVData;
 import edu.brown.cs.student.main.exceptions.DuplicateHeaderException;
 import edu.brown.cs.student.main.exceptions.FactoryFailureException;
+import edu.brown.cs.student.main.parsing.DefaultCreator;
 import edu.brown.cs.student.main.parsing.Parser;
 import java.io.FileReader;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class CSVHandler extends Handler implements Route {
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
     try {
-      Parser parser = new Parser(new FileReader(filePath));
+      Parser parser = new Parser(new FileReader(filePath), new DefaultCreator());
       boolean header = hasHeader.equals("true");
       this.csv = new CSVData(parser.parse(header), header);
 
