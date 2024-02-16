@@ -26,12 +26,19 @@ public class BroadbandHandler implements Route {
   private HashMap<String, String> stateCodes;
   private HashMap<String, String> countyCodes;
   private final CachedDatasource datasource;
+  private String errorMsg;
 
   /**
    * Default constructor for the BroadbandHandler. Takes no arguments.
    */
   public BroadbandHandler() {
     this.datasource = new CachedDatasource(new Datasource());
+    try {
+      this.stateCodes = Init.getStateCodes();
+      this.countyCodes = Init.getCountyCodes();
+    } catch (URISyntaxException | IOException | InterruptedException e) {
+      this.errorMsg = e.getMessage();
+    }
   }
 
   /**
@@ -47,11 +54,10 @@ public class BroadbandHandler implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
-    try {
-      this.stateCodes = Init.getStateCodes();
-      this.countyCodes = Init.getCountyCodes();
-    } catch (URISyntaxException | IOException | InterruptedException e) {
-      return new LoadFailureResponse(e.getMessage());
+
+    // Check if the initial queries of state and county codes generated an error
+    if(this.errorMsg != null) {
+      return new LoadFailureResponse(this.errorMsg);
     }
 
     String stateName = request.queryParams("state");
