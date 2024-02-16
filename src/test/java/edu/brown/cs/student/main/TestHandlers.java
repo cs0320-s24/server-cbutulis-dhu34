@@ -105,4 +105,21 @@ public class TestHandlers {
         assertEquals("LoadSuccessResponse[responseType=success, responseMap={}]", response.toString());
         clientConnection.disconnect();
     }
+
+    @Test
+    public void testBasicView() throws IOException {
+        HttpURLConnection clientConnection = tryRequest("viewcsv");
+        assertEquals(200, clientConnection.getResponseCode());
+
+        Moshi moshi = new Moshi.Builder().build();
+        // We'll use okio's Buffer class here
+        CSVHandler.LoadSuccessResponse response = moshi
+                .adapter(CSVHandler.LoadSuccessResponse.class)
+                .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
+
+//        System.out.println(response);
+        assert response != null;
+        assertEquals("LoadSuccessResponse[responseType=success, responseMap={}]", response.toString());
+        clientConnection.disconnect();
+    }
 }
