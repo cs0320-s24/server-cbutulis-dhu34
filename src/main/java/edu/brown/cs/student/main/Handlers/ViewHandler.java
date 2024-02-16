@@ -1,11 +1,8 @@
-package edu.brown.cs.student.main.server;
+package edu.brown.cs.student.main.Handlers;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import edu.brown.cs.student.main.CSVDataStorage.CSVData;
-import edu.brown.cs.student.main.Parsing.Parser;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import edu.brown.cs.student.main.Handlers.CSVHandler;
 import java.util.HashMap;
 import java.util.Map;
 import spark.Request;
@@ -20,15 +17,15 @@ import spark.Route;
  * complex, but this should serve as a reference.
  */
 // TODO 2: Check out this Handler. What does it do right now? How is the menu formed (deserialized)?
-public class CSVHandler implements Route {
-  private CSVData csv;
+public class ViewHandler implements Route {
+  private CSVHandler csvHandler;
 
   /**
    * Constructor accepts some shared state
    *
    */
-  public CSVHandler() {
-
+  public ViewHandler(CSVHandler handler) {
+    this.csvHandler = handler;
   }
 
   /**
@@ -44,26 +41,17 @@ public class CSVHandler implements Route {
    * @throws Exception This is part of the interface; we don't have to throw anything.
    */
   @Override
-  public Object handle(Request request, Response response) throws Exception {
+  public Object handle(Request request, Response response) {
     // TODO 2: Right now, we only serialize the first soup, let's make it so you can choose which
     // one you want!
     // Get Query parameters, can be used to make your search more specific
-    String filePath = request.queryParams("filePath");
-    String hasHeader = request.queryParams("hasHeader");
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
     // Iterate through the soups in the menu and return the first one
 
-    try {
-      Parser parser = new Parser(new FileReader(filePath));
-      boolean header = hasHeader.equals("true");
-      this.csv = new CSVData(parser.parse(header), header); //TODO: handle factory failure and io exception
-
-      return new LoadSuccessResponse(responseMap).serialize();
-    } catch (FileNotFoundException e) {
-      System.err.println(e.getMessage());
-    }
-    return new LoadFailureResponse().serialize();
+    responseMap.put("result", this.csvHandler.getCsv().toString());
+    System.out.println(responseMap);
+    return new CSVHandler.LoadSuccessResponse(responseMap).serialize();
   }
 
   /*
@@ -109,9 +97,5 @@ public class CSVHandler implements Route {
       Moshi moshi = new Moshi.Builder().build();
       return moshi.adapter(LoadFailureResponse.class).toJson(this);
     }
-  }
-
-  public CSVData getCsv() {
-    return csv;
   }
 }

@@ -1,10 +1,12 @@
-package edu.brown.cs.student.main.server;
+package edu.brown.cs.student.main.Handlers;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import edu.brown.cs.student.main.soup.Soup;
+import edu.brown.cs.student.main.CSVDataStorage.CSVData;
+import edu.brown.cs.student.main.Parsing.Parser;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import spark.Request;
 import spark.Response;
@@ -18,16 +20,15 @@ import spark.Route;
  * complex, but this should serve as a reference.
  */
 // TODO 2: Check out this Handler. What does it do right now? How is the menu formed (deserialized)?
-public class OrderHandler implements Route {
-  private final List<Soup> menu;
+public class CSVHandler implements Route {
+  private CSVData csv;
 
   /**
    * Constructor accepts some shared state
    *
-   * @param menu the shared state (note: we *DON'T* want to make a defensive copy here!
    */
-  public OrderHandler(List<Soup> menu) {
-    this.menu = menu;
+  public CSVHandler() {
+
   }
 
   /**
@@ -47,18 +48,22 @@ public class OrderHandler implements Route {
     // TODO 2: Right now, we only serialize the first soup, let's make it so you can choose which
     // one you want!
     // Get Query parameters, can be used to make your search more specific
-    String soupname = request.queryParams("soupName");
+    String filePath = request.queryParams("filePath");
+    String hasHeader = request.queryParams("hasHeader");
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
     // Iterate through the soups in the menu and return the first one
-    for (Soup soup : this.menu) {
-      if (soupname.equals(soup.getSoupName())) {
-        responseMap.put(soup.getSoupName(), soup);
-        responseMap.put("Number of ingredients", soup.getIngredients().size());
-        return new SoupSuccessResponse(responseMap).serialize();
-      }
+
+    try {
+      Parser parser = new Parser(new FileReader(filePath));
+      boolean header = hasHeader.equals("true");
+      this.csv = new CSVData(parser.parse(header), header); //TODO: handle factory failure and io exception
+
+      return new LoadSuccessResponse(responseMap).serialize();
+    } catch (FileNotFoundException e) {
+      System.err.println(e.getMessage());
     }
-    return new SoupNoRecipesFailureResponse().serialize();
+    return new LoadFailureResponse().serialize();
   }
 
   /*
@@ -68,8 +73,8 @@ public class OrderHandler implements Route {
    */
 
   /** Response object to send, containing a soup with certain ingredients in it */
-  public record SoupSuccessResponse(String response_type, Map<String, Object> responseMap) {
-    public SoupSuccessResponse(Map<String, Object> responseMap) {
+  public record LoadSuccessResponse(String response_type, Map<String, Object> responseMap) {
+    public LoadSuccessResponse(Map<String, Object> responseMap) {
       this("success", responseMap);
     }
     /**
@@ -79,7 +84,7 @@ public class OrderHandler implements Route {
       try {
         // Initialize Moshi which takes in this class and returns it as JSON!
         Moshi moshi = new Moshi.Builder().build();
-        JsonAdapter<SoupSuccessResponse> adapter = moshi.adapter(SoupSuccessResponse.class);
+        JsonAdapter<LoadSuccessResponse> adapter = moshi.adapter(LoadSuccessResponse.class);
         return adapter.toJson(this);
       } catch (Exception e) {
         // For debugging purposes, show in the console _why_ this fails
@@ -92,8 +97,8 @@ public class OrderHandler implements Route {
   }
 
   /** Response object to send if someone requested soup from an empty Menu */
-  public record SoupNoRecipesFailureResponse(String response_type) {
-    public SoupNoRecipesFailureResponse() {
+  public record LoadFailureResponse(String response_type) {
+    public LoadFailureResponse() {
       this("error");
     }
 
@@ -102,7 +107,11 @@ public class OrderHandler implements Route {
      */
     String serialize() {
       Moshi moshi = new Moshi.Builder().build();
-      return moshi.adapter(SoupNoRecipesFailureResponse.class).toJson(this);
+      return moshi.adapter(LoadFailureResponse.class).toJson(this);
     }
+  }
+
+  public CSVData getCsv() {
+    return csv;
   }
 }

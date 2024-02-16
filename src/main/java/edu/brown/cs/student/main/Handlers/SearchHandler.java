@@ -1,12 +1,8 @@
-package edu.brown.cs.student.main.server;
+package edu.brown.cs.student.main.Handlers;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import edu.brown.cs.student.main.CSVDataStorage.CSVData;
-import edu.brown.cs.student.main.Parsing.Parser;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import edu.brown.cs.student.main.Handlers.CSVHandler;
 import java.util.HashMap;
 import java.util.Map;
 import spark.Request;
