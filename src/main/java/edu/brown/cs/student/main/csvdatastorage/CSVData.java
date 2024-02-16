@@ -4,6 +4,9 @@ import edu.brown.cs.student.main.exceptions.DuplicateHeaderException;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Wraps the row List that represents a CSV for easier search functionality
+ */
 public class CSVData {
 
   private final List<List<String>> data;
