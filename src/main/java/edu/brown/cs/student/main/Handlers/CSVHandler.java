@@ -3,9 +3,12 @@ package edu.brown.cs.student.main.Handlers;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import edu.brown.cs.student.main.CSVDataStorage.CSVData;
+import edu.brown.cs.student.main.Exceptions.DuplicateHeaderException;
+import edu.brown.cs.student.main.Exceptions.FactoryFailureException;
 import edu.brown.cs.student.main.Parsing.Parser;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import spark.Request;
@@ -13,66 +16,48 @@ import spark.Response;
 import spark.Route;
 
 /**
- * Handler class for the soup ordering API endpoint.
- *
- * <p>This endpoint is similar to the endpoint(s) you'll need to create for Sprint 2. It takes a
- * basic GET request with no Json body, and returns a Json object in reply. The responses are more
- * complex, but this should serve as a reference.
+ * Handler class for the loadCSV endpoint.
  */
-// TODO 2: Check out this Handler. What does it do right now? How is the menu formed (deserialized)?
 public class CSVHandler implements Route {
   private CSVData csv;
 
   /**
-   * Constructor accepts some shared state
+   * Method which handles the user's request and is called when the API endpoint is accessed.
+   * This takes in the user's request, parses out its parameters, and then passes them in
+   * to instantiate a parser.
    *
-   */
-  public CSVHandler() {
-
-  }
-
-  /**
-   * Pick a convenient soup and make it. the most "convenient" soup is the first recipe we find in
-   * the unordered set of recipe cards.
-   *
-   * <p>NOTE: beware this "return Object" and "throws Exception" idiom. We need to follow it because
-   * the library uses it, but in general this lowers the protection of the type system.
-   *
-   * @param request the request to handle
-   * @param response use to modify properties of the response
-   * @return response content
-   * @throws Exception This is part of the interface; we don't have to throw anything.
+   * @param request - The user's query request
+   * @param response - The response to the user's query
+   * @return - the responseMap, a Map between strings and objects containing the API's response
    */
   @Override
-  public Object handle(Request request, Response response) throws Exception {
-    // TODO 2: Right now, we only serialize the first soup, let's make it so you can choose which
-    // one you want!
-    // Get Query parameters, can be used to make your search more specific
+  public Object handle(Request request, Response response) {
+    // Get Query parameters
     String filePath = request.queryParams("filePath");
     String hasHeader = request.queryParams("hasHeader");
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
-    // Iterate through the soups in the menu and return the first one
 
     try {
       Parser parser = new Parser(new FileReader(filePath));
       boolean header = hasHeader.equals("true");
-      this.csv = new CSVData(parser.parse(header), header); //TODO: handle factory failure and io exception
+      this.csv = new CSVData(parser.parse(header), header);
 
       return new LoadSuccessResponse(responseMap).serialize();
     } catch (FileNotFoundException e) {
       System.err.println(e.getMessage());
+    } catch (DuplicateHeaderException | IOException | FactoryFailureException e) {
+      System.out.println(e.getMessage());
     }
     return new LoadFailureResponse().serialize();
   }
 
-  /*
-   * Ultimately up to you how you want to structure your success and failure responses, but they
-   * should be distinguishable in some form! We show one form here and another form in ActivityHandler
-   * and you are also free to do your own way!
-   */
 
-  /** Response object to send, containing a soup with certain ingredients in it */
+  /**
+   * Response object which contains the result of the query and a success/failure state message.
+   * @param response_type
+   * @param responseMap
+   */
   public record LoadSuccessResponse(String response_type, Map<String, Object> responseMap) {
     public LoadSuccessResponse(Map<String, Object> responseMap) {
       this("success", responseMap);

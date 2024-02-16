@@ -1,8 +1,8 @@
 package edu.brown.cs.student.main.Handlers;
 
-import edu.brown.cs.student.main.Datasource.CachedDatasource;
+import edu.brown.cs.student.main.datasource.CachedDatasource;
 import edu.brown.cs.student.main.server.CensusAPIUtilities;
-import edu.brown.cs.student.main.Datasource.Datasource;
+import edu.brown.cs.student.main.datasource.Datasource;
 import edu.brown.cs.student.main.server.Init;
 import java.util.*;
 
@@ -12,31 +12,44 @@ import spark.Route;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
+/**
+ * Handler class from the broadband endpoint.
+ */
 public class BroadbandHandler implements Route {
     private HashMap<String, String> stateCodes;
     private HashMap<String, String> countyCodes;
     private CachedDatasource datasource;
 
+    /**
+     * Default constructor for the BroadbandHandler. Takes no arguments.
+     */
     public BroadbandHandler() {
         this.stateCodes = Init.getStateCodes();
         this.countyCodes = Init.getCountyCodes();
         this.datasource = new CachedDatasource(new Datasource());
     }
 
+    /**
+     * Method which handles the user's request and is called when the API endpoint is accessed.
+     * This takes in the user's request, parses out its parameters, and then passes the params
+     * forward to the Datasource class to get back a response from the API. It gets a
+     * JSON back from Datasource, deserializes it to format the JSON, puts it in a
+     * response map, then appends a time stamp onto the response map. This map of the responses
+     * is then returned.
+     *
+     * @param request - The user's query request
+     * @param response - The response to the user's query
+     * @return - the responseMap, a Map between strings and objects containing the API's response
+     */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         String stateName = request.queryParams("state");
         String countyName = request.queryParams("county");
         String stateCode = this.stateCodes.get(stateName);
         String countyCode = this.countyCodes.get(countyName);
 
-        // https://api.census.gov/data/2021/acs/acs1/subject/variables?get=S2802_C03_022E&for=county:*&in=state:06
-
         Map<String, Object> responseMap = new HashMap<>();
         try {
-            // Sends a request to the API and receives JSON back
-//            Datasource datasource = new Datasource();
-
             ArrayList<String> params = new ArrayList<>();
             params.add(countyCode);
             params.add(stateCode);
