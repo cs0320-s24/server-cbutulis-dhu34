@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main;
 
+import edu.brown.cs.student.main.datasource.Datasource;
+import edu.brown.cs.student.main.datasource.MockDataSource;
 import edu.brown.cs.student.main.handlers.BroadbandHandler;
 import edu.brown.cs.student.main.handlers.CSVHandler;
 import edu.brown.cs.student.main.handlers.SearchHandler;
@@ -26,11 +28,8 @@ public class TestBroadbandHandler {
     // Re-initialize state, etc. for _every_ test method run
 
     // In fact, restart the entire Spark server for every test!
-    CSVHandler csvHandler = new CSVHandler();
-    Spark.get("loadcsv", csvHandler);
-    Spark.get("searchcsv", new SearchHandler(csvHandler));
-    Spark.get("viewcsv", new ViewHandler(csvHandler));
-    Spark.get("broadband", new BroadbandHandler());
+    Datasource mockSource = new MockDataSource();
+    Spark.get("broadband", new BroadbandHandler(mockSource));
     Spark.init();
     Spark.awaitInitialization(); // don't continue until the server is listening
   }

@@ -3,6 +3,8 @@ package edu.brown.cs.student.main;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.squareup.moshi.Moshi;
+import edu.brown.cs.student.main.datasource.Datasource;
+import edu.brown.cs.student.main.datasource.MockDataSource;
 import edu.brown.cs.student.main.handlers.BroadbandHandler;
 import edu.brown.cs.student.main.handlers.CSVHandler;
 import edu.brown.cs.student.main.handlers.SearchHandler;
@@ -35,7 +37,6 @@ public class TestCSVHandlers {
     Spark.get("loadcsv", csvHandler);
     Spark.get("searchcsv", new SearchHandler(csvHandler));
     Spark.get("viewcsv", new ViewHandler(csvHandler));
-    Spark.get("broadband", new BroadbandHandler());
     Spark.init();
     Spark.awaitInitialization(); // don't continue until the server is listening
   }
@@ -72,7 +73,6 @@ public class TestCSVHandlers {
   @Test
   public void testLoadFailure() throws IOException {
     HttpURLConnection clientConnection = tryRequest("loadcsv?filePath=asdfasf");
-    // TODO: error handle with this, shouldn't crash
     assertEquals(200, clientConnection.getResponseCode());
 
     Moshi moshi = new Moshi.Builder().build();
@@ -85,7 +85,7 @@ public class TestCSVHandlers {
     //        System.out.println(response);
     assert response != null;
     assertEquals(
-        "LoadFailureResponse[responseType=error, error=asdfasf (No such file or directory)]",
+        "LoadFailureResponse[responseType=error, response=asdfasf (No such file or directory)]",
         response.toString());
     clientConnection.disconnect();
   }
@@ -143,18 +143,60 @@ public class TestCSVHandlers {
         response.toString());
     clientConnection.disconnect();
   }
+    @Test
+    public void testViewNotLoaded() throws IOException {
+        HttpURLConnection clientConnection0 = tryRequest("loadcsv?filePath=data/dfjksahjfkdsa");
+        Moshi moshi = new Moshi.Builder().build();
+        // We'll use okio's Buffer class here
+        CSVHandler.LoadSuccessResponse response0 = moshi
+                .adapter(CSVHandler.LoadSuccessResponse.class)
+                .fromJson(new Buffer().readFrom(clientConnection0.getInputStream()));
 
-  @Test
-  public void testBasicSearch() throws IOException {
-    HttpURLConnection clientConnection0 =
-        tryRequest("loadcsv?filePath=data/census/dol_ri_earnings_disparity.csv&hasHeader=true");
-    Moshi moshi = new Moshi.Builder().build();
-    // We'll use okio's Buffer class here
-    CSVHandler.LoadSuccessResponse response0 =
-        moshi
-            .adapter(CSVHandler.LoadSuccessResponse.class)
-            .fromJson(new Buffer().readFrom(clientConnection0.getInputStream()));
+        HttpURLConnection clientConnection = tryRequest("viewcsv");
+        assertEquals(200, clientConnection.getResponseCode());
 
+        // We'll use okio's Buffer class here
+        ViewHandler.LoadSuccessResponse response = moshi
+                .adapter(ViewHandler.LoadSuccessResponse.class)
+                .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
+
+//        System.out.println(response);
+        assert response != null;
+        assertEquals("LoadSuccessResponse[responseType=error, responseMap=null]", response.toString());
+        clientConnection.disconnect();
+    }
+
+    @Test
+    public void testFailedSearch() throws IOException {
+        HttpURLConnection clientConnection0 = tryRequest("loadcsv?filePath=data/census/dol_ri_earnings_disparity.csv&hasHeader=true");
+        Moshi moshi = new Moshi.Builder().build();
+        // We'll use okio's Buffer class here
+        CSVHandler.LoadSuccessResponse response0 = moshi
+                .adapter(CSVHandler.LoadSuccessResponse.class)
+                .fromJson(new Buffer().readFrom(clientConnection0.getInputStream()));
+
+        HttpURLConnection clientConnection = tryRequest("searchcsv?target=Blak");
+        assertEquals(200, clientConnection.getResponseCode());
+
+        // We'll use okio's Buffer class here
+        ViewHandler.LoadSuccessResponse response = moshi
+                .adapter(ViewHandler.LoadSuccessResponse.class)
+                .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
+
+//        System.out.println(response);
+        assert response != null;
+        assertEquals("LoadSuccessResponse[responseType=success, responseMap={result=}]", response.toString());
+        clientConnection.disconnect();
+    }
+
+    @Test
+    public void testBasicSearch() throws IOException {
+        HttpURLConnection clientConnection0 = tryRequest("loadcsv?filePath=data/census/dol_ri_earnings_disparity.csv&hasHeader=true");
+        Moshi moshi = new Moshi.Builder().build();
+        // We'll use okio's Buffer class here
+        CSVHandler.LoadSuccessResponse response0 = moshi
+                .adapter(CSVHandler.LoadSuccessResponse.class)
+                .fromJson(new Buffer().readFrom(clientConnection0.getInputStream()));
     HttpURLConnection clientConnection = tryRequest("searchcsv?target=Black");
     assertEquals(200, clientConnection.getResponseCode());
 
