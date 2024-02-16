@@ -2,6 +2,7 @@ package edu.brown.cs.student.main.datasource;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
+import com.google.common.cache.CacheStats;
 import com.google.common.cache.LoadingCache;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -30,7 +31,6 @@ public class CachedDatasource implements Datasource {
                 new CacheLoader<>() {
                   @Override
                   public String load(List<String> params) throws Exception {
-                    System.out.println("called load for params: " + params);
                     return datasource.sendRequest(params);
                   }
                 });
@@ -54,10 +54,19 @@ public class CachedDatasource implements Datasource {
                 new CacheLoader<>() {
                   @Override
                   public String load(List<String> params) throws Exception {
-                    System.out.println("called load for params: " + params);
                     return datasource.sendRequest(params);
                   }
                 });
+  }
+
+  /**
+   * Testing method that provides detailed cache stats information to test that the cache
+   * is working properly.
+   *
+   * @return the cache stats provided by GUAVA
+   */
+  public CacheStats getCacheStats() {
+    return this.cache.stats();
   }
 
   /**
@@ -69,6 +78,6 @@ public class CachedDatasource implements Datasource {
    */
   public String sendRequest(List<String> params) {
     // Use get method to fetch value from cache
-    return cache.getUnchecked(params);
+    return this.cache.getUnchecked(params);
   }
 }

@@ -40,7 +40,6 @@ public class ApiDatasource implements Datasource {
     // Send that API request then store the response in this variable
     HttpResponse<String> sentCensusRequest =
         HttpClient.newBuilder().build().send(censusRequest, HttpResponse.BodyHandlers.ofString());
-    System.out.println(sentCensusRequest.body());
     return sentCensusRequest.body();
   }
 }
