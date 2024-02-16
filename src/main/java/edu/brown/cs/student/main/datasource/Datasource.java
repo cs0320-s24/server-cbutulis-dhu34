@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+/**
+ * Datasource interface which enables mocking.
+ */
 public interface Datasource {
-  public String sendRequest(List<String> params)
+
+  String sendRequest(List<String> params)
       throws URISyntaxException, IOException, InterruptedException;
 }
