@@ -18,7 +18,7 @@ import spark.Route;
 /**
  * Handler class for the loadCSV endpoint.
  */
-public class CSVHandler implements Route {
+public class CSVHandler extends Handler implements Route {
 
   private CSVData csv;
 
@@ -36,6 +36,7 @@ public class CSVHandler implements Route {
     // Get Query parameters
     String filePath = request.queryParams("filePath");
     String hasHeader = request.queryParams("hasHeader");
+
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
 
@@ -54,60 +55,7 @@ public class CSVHandler implements Route {
   }
 
   /**
-   * Response object which contains the result of the query and a success/failure state message.
-   *
-   * @param responseType
-   * @param responseMap
-   */
-  public record LoadSuccessResponse(String responseType, Map<String, Object> responseMap) {
-
-    public LoadSuccessResponse(Map<String, Object> responseMap) {
-      this("success", responseMap);
-    }
-
-    /**
-     * Serializes a successful response from an API call.
-     *
-     * @return this response, serialized as Json
-     */
-    public String serialize() {
-      try {
-        // Initialize Moshi which takes in this class and returns it as JSON!
-        Moshi moshi = new Moshi.Builder().build();
-        JsonAdapter<LoadSuccessResponse> adapter = moshi.adapter(LoadSuccessResponse.class);
-        return adapter.toJson(this);
-      } catch (Exception e) {
-        // For debugging purposes, show in the console _why_ this fails
-        // Otherwise we'll just get an error 500 from the API in integration
-        // testing.
-        e.printStackTrace();
-        throw e;
-      }
-    }
-  }
-
-  /**
-   * Response object to send if someone requested soup from an empty Menu.
-   */
-  public record LoadFailureResponse(String responseType) {
-
-    public LoadFailureResponse() {
-      this("error");
-    }
-
-    /**
-     * Serializes a failed response from an API call.
-     *
-     * @return this response, serialized as Json
-     */
-    String serialize() {
-      Moshi moshi = new Moshi.Builder().build();
-      return moshi.adapter(LoadFailureResponse.class).toJson(this);
-    }
-  }
-
-  /**
-   * Returns the csv data
+   * Returns the csv data.
    *
    * @return csv data
    */
