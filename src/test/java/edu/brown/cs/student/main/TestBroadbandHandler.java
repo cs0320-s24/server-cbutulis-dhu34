@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main;
 
+import edu.brown.cs.student.main.datasource.ApiDatasource;
+import edu.brown.cs.student.main.datasource.CachedDatasource;
 import edu.brown.cs.student.main.datasource.Datasource;
 import edu.brown.cs.student.main.datasource.MockDataSource;
 import edu.brown.cs.student.main.handlers.BroadbandHandler;
@@ -26,10 +28,10 @@ public class TestBroadbandHandler {
   @BeforeEach
   public void setup() {
     // Re-initialize state, etc. for _every_ test method run
-
     // In fact, restart the entire Spark server for every test!
     Datasource mockSource = new MockDataSource();
-    Spark.get("broadband", new BroadbandHandler(mockSource));
+    Spark.get("broadband", new BroadbandHandler(new CachedDatasource(new ApiDatasource())));
+    Spark.get("broadbandMock", new BroadbandHandler(mockSource));
     Spark.init();
     Spark.awaitInitialization(); // don't continue until the server is listening
   }
