@@ -1,7 +1,5 @@
 package edu.brown.cs.student.main.handlers;
 
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
 import java.util.HashMap;
 import java.util.Map;
 import spark.Request;
@@ -9,14 +7,15 @@ import spark.Response;
 import spark.Route;
 
 /**
- * Handler class for the viewhandler endpoint
+ * Handler class for the viewhandler endpoint.
  */
 public class ViewHandler extends Handler implements Route {
   private final CSVHandler csvHandler;
 
   /**
    * Constructor uses a CSVHandler object to get necessary data.
-   * @param handler
+   *
+   * @param handler A CSVHandler Object
    */
   public ViewHandler(CSVHandler handler) {
     this.csvHandler = handler;
@@ -36,7 +35,7 @@ public class ViewHandler extends Handler implements Route {
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
 
-    if(this.csvHandler.getCsv() == null) {
+    if (this.csvHandler.getCsv() == null) {
       return new LoadFailureResponse("No File Loaded").serialize();
     }
     responseMap.put("result", this.csvHandler.getCsv().toString());

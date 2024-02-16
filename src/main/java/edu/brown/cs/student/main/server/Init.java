@@ -3,7 +3,6 @@ package edu.brown.cs.student.main.server;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Init class, which is responsible for sending API queries to the Census Bureau in order to get the
@@ -20,9 +19,6 @@ public class Init {
   public static HashMap<String, String> getCountyCodes()
       throws URISyntaxException, IOException, InterruptedException {
 
-    // Creates a hashmap to store the results of the request
-    Map<String, Object> responseMap = new HashMap<>();
-
     // Sends a request to the API and receives JSON back
     String activityJson = CensusAPIUtilities.sendRequest("NAME", "county:*");
     return CensusAPIUtilities.deserializeCountyCodes(activityJson);
@@ -36,8 +32,6 @@ public class Init {
    */
   public static HashMap<String, String> getStateCodes()
       throws IOException, URISyntaxException, InterruptedException {
-    // Creates a hashmap to store the results of the request
-    Map<String, Object> responseMap = new HashMap<>();
 
     // Sends a request to the API and receives JSON back
     String activityJson = CensusAPIUtilities.sendRequest("NAME", "state:*");

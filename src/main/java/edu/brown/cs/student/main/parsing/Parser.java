@@ -13,41 +13,26 @@ import java.util.regex.Pattern;
  * This is the parser class, which is responsible for converting the CSV into Lists of generic
  * type using a strategy pattern.
  */
-public class Parser {
+public class Parser<T> {
   private final BufferedReader br;
   private final List<String> stringList;
   private final List<List<String>> rowList;
-  private final List<Object> parsedList;
-  private final CreatorFromRow<?> rowCreator;
+  private final List<T> parsedList;
+  private final CreatorFromRow<T> rowCreator;
   private final List<Object> malformedList;
 
   /**
-   * Parser class takes in a raw CSV and converts it into a List of Strings by reading it in
-   * and processing it.
-   *
-   * @param read reader which the user passes in for reading the CSV
-   */
-  public Parser(Reader read) {
-    this.br = new BufferedReader(read);
-    this.stringList = new ArrayList<>();
-    this.rowCreator = new DefaultCreator();
-    this.parsedList = new ArrayList<>();
-    this.rowList = new ArrayList<>();
-    this.malformedList = new ArrayList<>();
-  }
-
-  /**
-   * Alternative constructor for the Parser which also takes in a custom CreatorFromRow which
+   * Constructor for the Parser which also takes in a custom CreatorFromRow which
    * defines an alternative way of packaging rows into data structures.
    *
    * @param read Reader class which the user inputs to read the raw CSV
    * @param creatorFromRow implements CreatorFromRow which packages a row of the CSV into a data
    *                       structure
    */
-  public Parser(Reader read, CreatorFromRow creatorFromRow) {
+  public Parser(Reader read, CreatorFromRow<T> creatorFromRow) {
     this.br = new BufferedReader(read);
     this.stringList = new ArrayList<>();
-    this.rowCreator = creatorFromRow; // this diff
+    this.rowCreator = creatorFromRow;
     this.parsedList = new ArrayList<>();
     this.rowList = new ArrayList<>();
     this.malformedList = new ArrayList<>();
@@ -91,7 +76,7 @@ public class Parser {
    * @throws FactoryFailureException exception thrown when there is an issue with making the row
    *         objects
    */
-  public List parse(boolean hasHeader) throws IOException, FactoryFailureException {
+  public List<T> parse(boolean hasHeader) throws IOException, FactoryFailureException {
     // reads every line in the csv
     String line;
     do {

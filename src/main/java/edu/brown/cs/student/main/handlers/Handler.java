@@ -10,17 +10,17 @@ import java.util.Map;
 public abstract class Handler {
 
   /**
-   * Response object to send if a call to handle() succeeded
+   * Response object to send if a call to handle() succeeded.
    *
-   * @param responseType
-   * @param responseMap
+   * @param responseType the type of response (success or error)
+   * @param responseMap the map containing our server response
    */
   public record LoadSuccessResponse(String responseType, Map<String, Object> responseMap) {
 
     /**
      * LoadSuccessResponse Constructor.
      *
-     * @param responseMap
+     * @param responseMap the map containing out server responses
      */
     public LoadSuccessResponse(Map<String, Object> responseMap) {
       this("success", responseMap);
@@ -44,9 +44,10 @@ public abstract class Handler {
   }
 
   /**
-   * Response object to send if a call to handle() failed
+   * Response object to send if a call to handle() failed.
    *
-   * @param responseType the type of response
+   * @param responseType the type of response (success or error)
+   * @param response the error message
    */
   public record LoadFailureResponse(String responseType, String response) {
 

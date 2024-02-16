@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class FactoryFailureException extends Exception {
 
-  final List<String> row;
+  List<String> row;
 
   /**
    * Exception thrown when there is an error in creating an object from a row.
@@ -19,6 +19,8 @@ public class FactoryFailureException extends Exception {
    */
   public FactoryFailureException(String message, List<String> row) {
     super(message);
-    this.row = new ArrayList<>(row);
+    if (row != null) {
+      this.row = new ArrayList<>(row);
+    }
   }
 }

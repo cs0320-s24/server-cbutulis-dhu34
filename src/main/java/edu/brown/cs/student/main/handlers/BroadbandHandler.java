@@ -54,7 +54,7 @@ public class BroadbandHandler extends Handler implements Route {
   public Object handle(Request request, Response response) {
 
     // Check if the initial queries of state and county codes generated an error
-    if(this.errorMsg != null) {
+    if (this.errorMsg != null) {
       return new LoadFailureResponse(this.errorMsg);
     }
 

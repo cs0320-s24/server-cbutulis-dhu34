@@ -1,7 +1,5 @@
 package edu.brown.cs.student.main.handlers;
 
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
 import java.util.HashMap;
 import java.util.Map;
 import spark.Request;
@@ -17,6 +15,7 @@ public class SearchHandler extends Handler implements Route {
 
   /**
    * Constructor uses a CSVHandler object to get necessary data.
+   *
    * @param handler the handler for csv parser
    */
   public SearchHandler(CSVHandler handler) {
@@ -43,17 +42,15 @@ public class SearchHandler extends Handler implements Route {
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
 
-    if(this.csvHandler.getCsv() == null) {
+    if (this.csvHandler.getCsv() == null) {
       return new LoadFailureResponse("No CSV has been loaded").serialize();
     }
     // Put the result in the response map
-    if(header == null && col == null) {
+    if (header == null && col == null) {
       responseMap.put("result", this.csvHandler.getCsv().getTarget(target));
-    }
-    else if(header != null && col == null) {
+    } else if (header != null && col == null) {
       responseMap.put("result", this.csvHandler.getCsv().getTarget(target, header));
-    }
-    else if(header == null) {
+    } else if (header == null) {
       responseMap.put("result", this.csvHandler.getCsv().getTarget(target, col));
     }
 

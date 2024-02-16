@@ -3,6 +3,7 @@ package edu.brown.cs.student.main.localuser;
 import edu.brown.cs.student.main.csvdatastorage.CSVData;
 import edu.brown.cs.student.main.exceptions.DuplicateHeaderException;
 import edu.brown.cs.student.main.exceptions.FactoryFailureException;
+import edu.brown.cs.student.main.parsing.DefaultCreator;
 import edu.brown.cs.student.main.parsing.Parser;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -120,7 +121,7 @@ public class Repl {
       // check that it's in the data folder and not do anything suspicious
       if (args[1].startsWith("data/") && !args[1].contains("../")) {
         try {
-          Parser parser = new Parser(new FileReader(args[1]));
+          Parser parser = new Parser(new FileReader(args[1]), new DefaultCreator());
           boolean header = args[2].equals("true"); // makes header into the user's input
           try {
             this.csv = new CSVData(parser.parse(header), header);

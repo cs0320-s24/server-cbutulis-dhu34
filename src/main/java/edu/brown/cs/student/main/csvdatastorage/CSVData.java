@@ -115,10 +115,10 @@ public class CSVData {
    */
   @Override
   public String toString() {
-    String formattedCSV = "";
+    String formattedCsv = "";
     for (List<String> datum : this.data) {
-      formattedCSV += datum + "\n";
+      formattedCsv += datum + "\n";
     }
-    return formattedCSV;
+    return formattedCsv;
   }
 }
