@@ -129,14 +129,13 @@ public class TestBroadbandHandler {
 
 //    System.out.println(response);
     System.out.println(datasource.getCacheStats());
-    assertEquals(200, clientConnection1.getResponseCode());
+    assertEquals(200, clientConnection.getResponseCode());
     Handler.LoadSuccessResponse response1 = moshi.adapter(Handler.LoadSuccessResponse.class)
-            .fromJson(new Buffer().readFrom(clientConnection1.getInputStream()));
+            .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
 //    System.out.println(response);
 
 //    System.out.println(datasource.getCacheStats());
->>>>>>> 893c22f0baa144d3f76e5767b8454c9740ffd57a
 
     clientConnection.disconnect();
   }
