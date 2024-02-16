@@ -20,7 +20,7 @@ public class CSVData {
    * @throws DuplicateHeaderException is an exception that gets thrown when there are multiples
    *                                  headers of the same name
    */
-  public CSVData(List rawData, boolean header) throws DuplicateHeaderException {
+  public CSVData(List<List<String>> rawData, boolean header) throws DuplicateHeaderException {
     // assumption that all objects are strings, if using the REPL they're using default
     // functionality
     this.data = rawData;

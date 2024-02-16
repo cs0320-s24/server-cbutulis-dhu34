@@ -16,7 +16,7 @@ import spark.Route;
  * complex, but this should serve as a reference.
  */
 public class ViewHandler implements Route {
-  private CSVHandler csvHandler;
+  private final CSVHandler csvHandler;
 
   /**
    * Constructor accepts some shared state
@@ -36,7 +36,6 @@ public class ViewHandler implements Route {
    * @param request the request to handle
    * @param response use to modify properties of the response
    * @return response content
-   * @throws Exception This is part of the interface; we don't have to throw anything.
    */
   @Override
   public Object handle(Request request, Response response) {

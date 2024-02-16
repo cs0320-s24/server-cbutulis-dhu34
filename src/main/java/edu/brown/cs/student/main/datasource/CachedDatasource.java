@@ -25,7 +25,7 @@ public class CachedDatasource {
         .maximumSize(50)
         .expireAfterWrite(20, TimeUnit.MINUTES)
         .recordStats()
-        .build(new CacheLoader<List<String>, String>() {
+        .build(new CacheLoader<>() {
           @Override
           public String load(List<String> params) throws Exception {
             System.out.println("called load for params: " + params);
@@ -47,7 +47,7 @@ public class CachedDatasource {
         .maximumSize(maxSize)
         .expireAfterWrite(minToExpel, TimeUnit.MINUTES)
         .recordStats()
-        .build(new CacheLoader<List<String>, String>() {
+        .build(new CacheLoader<>() {
           @Override
           public String load(List<String> params) throws Exception {
             System.out.println("called load for params: " + params);

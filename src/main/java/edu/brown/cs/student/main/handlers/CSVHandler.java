@@ -53,7 +53,6 @@ public class CSVHandler implements Route {
     return new LoadFailureResponse().serialize();
   }
 
-
   /**
    * Response object which contains the result of the query and a success/failure state message.
    *
