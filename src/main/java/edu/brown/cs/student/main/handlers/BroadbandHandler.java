@@ -2,8 +2,12 @@ package edu.brown.cs.student.main.handlers;
 
 import edu.brown.cs.student.main.datasource.CachedDatasource;
 import edu.brown.cs.student.main.datasource.Datasource;
+import edu.brown.cs.student.main.handlers.Handler.LoadFailureResponse;
+import edu.brown.cs.student.main.handlers.Handler.LoadSuccessResponse;
 import edu.brown.cs.student.main.server.CensusAPIUtilities;
 import edu.brown.cs.student.main.server.Init;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,16 +23,14 @@ import spark.Route;
  */
 public class BroadbandHandler implements Route {
 
-  private final HashMap<String, String> stateCodes;
-  private final HashMap<String, String> countyCodes;
+  private HashMap<String, String> stateCodes;
+  private HashMap<String, String> countyCodes;
   private final CachedDatasource datasource;
 
   /**
    * Default constructor for the BroadbandHandler. Takes no arguments.
    */
   public BroadbandHandler() {
-    this.stateCodes = Init.getStateCodes();
-    this.countyCodes = Init.getCountyCodes();
     this.datasource = new CachedDatasource(new Datasource());
   }
 
@@ -45,6 +47,13 @@ public class BroadbandHandler implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
+    try {
+      this.stateCodes = Init.getStateCodes();
+      this.countyCodes = Init.getCountyCodes();
+    } catch (URISyntaxException | IOException | InterruptedException e) {
+      return new LoadFailureResponse(e.getMessage());
+    }
+
     String stateName = request.queryParams("state");
     String countyName = request.queryParams("county");
     String stateCode = this.stateCodes.get(stateName);
@@ -69,14 +78,9 @@ public class BroadbandHandler implements Route {
       LocalDateTime now = LocalDateTime.now();
 
       responseMap.put("timestamp", dtf.format(now));
-      return responseMap;
+      return new LoadSuccessResponse(responseMap).serialize();
     } catch (Exception e) {
-      e.printStackTrace();
-      // This is a relatively unhelpful exception message. An important part of this sprint will be
-      // in learning to debug correctly by creating your own informative error messages where Spark
-      // falls short.
-      responseMap.put("result", "Exception");
+      return new LoadFailureResponse(e.getMessage()).serialize();
     }
-    return responseMap;
   }
 }

@@ -39,19 +39,15 @@ public class CSVHandler extends Handler implements Route {
 
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
-
     try {
       Parser parser = new Parser(new FileReader(filePath));
       boolean header = hasHeader.equals("true");
       this.csv = new CSVData(parser.parse(header), header);
 
       return new LoadSuccessResponse(responseMap).serialize();
-    } catch (FileNotFoundException e) {
-      System.err.println(e.getMessage());
     } catch (DuplicateHeaderException | IOException | FactoryFailureException e) {
-      System.out.println(e.getMessage());
+      return new LoadFailureResponse(e.getMessage()).serialize();
     }
-    return new LoadFailureResponse().serialize();
   }
 
   /**

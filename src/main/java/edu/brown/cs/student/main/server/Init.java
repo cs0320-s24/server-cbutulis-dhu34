@@ -1,5 +1,7 @@
 package edu.brown.cs.student.main.server;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,38 +17,30 @@ public class Init {
    *
    * @return returns a HashMap of the counties mapped to codes
    */
-  public static HashMap<String, String> getCountyCodes() {
+  public static HashMap<String, String> getCountyCodes()
+      throws URISyntaxException, IOException, InterruptedException {
 
     // Creates a hashmap to store the results of the request
     Map<String, Object> responseMap = new HashMap<>();
-    try {
-      // Sends a request to the API and receives JSON back
-      String activityJson = CensusAPIUtilities.sendRequest("NAME", "county:*");
-      return CensusAPIUtilities.deserializeCountyCodes(activityJson);
-    } catch (Exception e) {
-      e.printStackTrace();
-      responseMap.put("result", "Exception");
-    }
-    return null;
+
+    // Sends a request to the API and receives JSON back
+    String activityJson = CensusAPIUtilities.sendRequest("NAME", "county:*");
+    return CensusAPIUtilities.deserializeCountyCodes(activityJson);
   }
 
   /**
-   * Method returns a list of codes representing states attained through an API query to the
-   * Census Bureau.
+   * Method returns a list of codes representing states attained through an API query to the Census
+   * Bureau.
    *
    * @return returns a HashMap of the states mapped to codes
    */
-  public static HashMap<String, String> getStateCodes() {
+  public static HashMap<String, String> getStateCodes()
+      throws IOException, URISyntaxException, InterruptedException {
     // Creates a hashmap to store the results of the request
     Map<String, Object> responseMap = new HashMap<>();
-    try {
-      // Sends a request to the API and receives JSON back
-      String activityJson = CensusAPIUtilities.sendRequest("NAME", "state:*");
-      return CensusAPIUtilities.deserializeStateCodes(activityJson);
-    } catch (Exception e) {
-      e.printStackTrace();
-      responseMap.put("result", "Exception");
-    }
-    return null;
+
+    // Sends a request to the API and receives JSON back
+    String activityJson = CensusAPIUtilities.sendRequest("NAME", "state:*");
+    return CensusAPIUtilities.deserializeStateCodes(activityJson);
   }
 }

@@ -52,13 +52,13 @@ public abstract class Handler {
    *
    * @param responseType the type of response
    */
-  public record LoadFailureResponse(String responseType) {
+  public record LoadFailureResponse(String responseType, String error) {
 
     /**
      * Constructor for LoadFailureResponse.
      */
-    public LoadFailureResponse() {
-      this("error");
+    public LoadFailureResponse(String error) {
+      this("error", error);
     }
 
     /**

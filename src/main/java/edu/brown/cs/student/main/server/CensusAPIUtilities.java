@@ -82,26 +82,12 @@ public class CensusAPIUtilities {
    * @throws IOException if the json is invalid
    */
   public static List<List<String>> getMoshiAdapter(String jsonList) throws IOException {
-    try {
-      Moshi moshi = new Moshi.Builder().build();
+    Moshi moshi = new Moshi.Builder().build();
 
-      Type listType = Types.newParameterizedType(List.class, List.class, String.class);
-      JsonAdapter<List<List<String>>> adapter = moshi.adapter(listType);
+    Type listType = Types.newParameterizedType(List.class, List.class, String.class);
+    JsonAdapter<List<List<String>>> adapter = moshi.adapter(listType);
 
-      return adapter.fromJson(jsonList);
-    }
-
-    /* Moshi always throws a standard java.io.IOException if there is an error reading the JSON
-    document, or if it is malformed. It throws a JsonDataException if the JSON document is
-    well-formed, but doesn't match the expected format. */ catch (IOException e) {
-      // In a real system, we wouldn't println like this, but it's useful for demonstration:
-      System.err.println("OrderHandler: string wasn't valid JSON.");
-      throw e;
-    } catch (JsonDataException e) {
-      // In a real system, we wouldn't println like this, but it's useful for demonstration:
-      System.err.println("OrderHandler: JSON wasn't in the right format.");
-      throw e;
-    }
+    return adapter.fromJson(jsonList);
   }
 
   /**
@@ -124,6 +110,5 @@ public class CensusAPIUtilities {
         .send(buildCensusApiRequest, HttpResponse.BodyHandlers.ofString());
 
     return sentCensusApiResponse.body();
-
   }
 }
