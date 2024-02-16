@@ -117,8 +117,8 @@ public class TestBroadbandHandler {
     Handler.LoadSuccessResponse response = moshi.adapter(Handler.LoadSuccessResponse.class)
             .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
-    System.out.println(response);
-    System.out.println(datasource.getCacheStats());
+//    System.out.println(response);
+//    System.out.println(datasource.getCacheStats());
     TimeUnit.SECONDS.sleep(3);
 
     HttpURLConnection clientConnection1 =
@@ -126,9 +126,10 @@ public class TestBroadbandHandler {
     assertEquals(200, clientConnection1.getResponseCode());
     Handler.LoadSuccessResponse response1 = moshi.adapter(Handler.LoadSuccessResponse.class)
             .fromJson(new Buffer().readFrom(clientConnection1.getInputStream()));
-    System.out.println(response);
 
-    System.out.println(datasource.getCacheStats());
+//    System.out.println(response);
+
+//    System.out.println(datasource.getCacheStats());
 
     clientConnection.disconnect();
   }
