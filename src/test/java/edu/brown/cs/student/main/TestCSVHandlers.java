@@ -12,6 +12,7 @@ import edu.brown.cs.student.main.handlers.CSVHandler;
 import edu.brown.cs.student.main.handlers.SearchHandler;
 import edu.brown.cs.student.main.handlers.ViewHandler;
 import okio.Buffer;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,14 @@ public class TestCSVHandlers {
         Spark.get("broadband", new BroadbandHandler());
         Spark.init();
         Spark.awaitInitialization(); // don't continue until the server is listening
+    }
+
+    @AfterEach
+    public void teardown() {
+        // Gracefully stop Spark listening on both endpoints after each test
+        Spark.unmap("order");
+        Spark.unmap("activity");
+        Spark.awaitStop(); // don't proceed until the server is stopped
     }
 
     /**
@@ -75,7 +84,7 @@ public class TestCSVHandlers {
 
 //        System.out.println(response);
         assert response != null;
-        assertEquals("LoadFailureResponse[responseType=error]", response.toString());
+        assertEquals("LoadFailureResponse[responseType=error, error=asdfasf (No such file or directory)]", response.toString());
         clientConnection.disconnect();
     }
 
