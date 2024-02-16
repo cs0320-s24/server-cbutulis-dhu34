@@ -2,10 +2,10 @@ package edu.brown.cs.student.main.server;
 
 import static spark.Spark.after;
 
-import edu.brown.cs.student.main.Handlers.BroadbandHandler;
-import edu.brown.cs.student.main.Handlers.CSVHandler;
-import edu.brown.cs.student.main.Handlers.SearchHandler;
-import edu.brown.cs.student.main.Handlers.ViewHandler;
+import edu.brown.cs.student.main.handlers.BroadbandHandler;
+import edu.brown.cs.student.main.handlers.CSVHandler;
+import edu.brown.cs.student.main.handlers.SearchHandler;
+import edu.brown.cs.student.main.handlers.ViewHandler;
 import spark.Spark;
 
 /**

@@ -1,11 +1,11 @@
-package edu.brown.cs.student.main.Handlers;
+package edu.brown.cs.student.main.handlers;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import edu.brown.cs.student.main.CSVDataStorage.CSVData;
-import edu.brown.cs.student.main.Exceptions.DuplicateHeaderException;
-import edu.brown.cs.student.main.Exceptions.FactoryFailureException;
-import edu.brown.cs.student.main.Parsing.Parser;
+import edu.brown.cs.student.main.csvdatastorage.CSVData;
+import edu.brown.cs.student.main.exceptions.DuplicateHeaderException;
+import edu.brown.cs.student.main.exceptions.FactoryFailureException;
+import edu.brown.cs.student.main.parsing.Parser;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -19,14 +19,15 @@ import spark.Route;
  * Handler class for the loadCSV endpoint.
  */
 public class CSVHandler implements Route {
+
   private CSVData csv;
 
   /**
-   * Method which handles the user's request and is called when the API endpoint is accessed.
-   * This takes in the user's request, parses out its parameters, and then passes them in
-   * to instantiate a parser.
+   * Method which handles the user's request and is called when the API endpoint is accessed. This
+   * takes in the user's request, parses out its parameters, and then passes them in to instantiate
+   * a parser.
    *
-   * @param request - The user's query request
+   * @param request  - The user's query request
    * @param response - The response to the user's query
    * @return - the responseMap, a Map between strings and objects containing the API's response
    */
@@ -55,17 +56,22 @@ public class CSVHandler implements Route {
 
   /**
    * Response object which contains the result of the query and a success/failure state message.
-   * @param response_type
+   *
+   * @param responseType
    * @param responseMap
    */
-  public record LoadSuccessResponse(String response_type, Map<String, Object> responseMap) {
+  public record LoadSuccessResponse(String responseType, Map<String, Object> responseMap) {
+
     public LoadSuccessResponse(Map<String, Object> responseMap) {
       this("success", responseMap);
     }
+
     /**
+     * Serializes a successful response from an API call.
+     *
      * @return this response, serialized as Json
      */
-    String serialize() {
+    public String serialize() {
       try {
         // Initialize Moshi which takes in this class and returns it as JSON!
         Moshi moshi = new Moshi.Builder().build();
@@ -81,13 +87,18 @@ public class CSVHandler implements Route {
     }
   }
 
-  /** Response object to send if someone requested soup from an empty Menu */
-  public record LoadFailureResponse(String response_type) {
+  /**
+   * Response object to send if someone requested soup from an empty Menu.
+   */
+  public record LoadFailureResponse(String responseType) {
+
     public LoadFailureResponse() {
       this("error");
     }
 
     /**
+     * Serializes a failed response from an API call.
+     *
      * @return this response, serialized as Json
      */
     String serialize() {

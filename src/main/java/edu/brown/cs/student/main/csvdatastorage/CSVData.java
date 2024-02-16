@@ -1,31 +1,31 @@
-package edu.brown.cs.student.main.CSVDataStorage;
+package edu.brown.cs.student.main.csvdatastorage;
 
-import edu.brown.cs.student.main.Exceptions.DuplicateHeaderException;
-
+import edu.brown.cs.student.main.exceptions.DuplicateHeaderException;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class CSVData {
-  private List<List<String>> data;
+
+  private final List<List<String>> data;
   private HashMap<String, Integer> headers;
   private int numCols;
 
   /**
-   * This class is a wrapper for the raw List that represents the CSV. It contains a List of the data in
-   * the CSV and a Hashmap which maps headers to their column indices. It also contains a field which represents
-   * the number of columns in the CSV.
+   * This class is a wrapper for the raw List that represents the CSV. It contains a List of the
+   * data in the CSV and a Hashmap which maps headers to their column indices. It also contains a
+   * field which represents the number of columns in the CSV.
    *
-   * @param rawData  a List of Lists of Strings representing the raw parsed CSV
-   * @param header a boolean which specifies whether the CSV has headers
-   * @throws DuplicateHeaderException is an exception that gets thrown when there are multiples headers of the same name
+   * @param rawData a List of Lists of Strings representing the raw parsed CSV
+   * @param header  a boolean which specifies whether the CSV has headers
+   * @throws DuplicateHeaderException is an exception that gets thrown when there are multiples
+   *                                  headers of the same name
    */
   public CSVData(List rawData, boolean header) throws DuplicateHeaderException {
     // assumption that all objects are strings, if using the REPL they're using default
     // functionality
     this.data = rawData;
     if (header) {
-      this.headers = new HashMap<String, Integer>();
+      this.headers = new HashMap<>();
       this.populateHeaderHashmap();
     }
 
@@ -42,10 +42,11 @@ public class CSVData {
   }
 
   /**
-   * Method called in the constructor which populates the Hashmap that maps header names to their column
-   * indices.
+   * Method called in the constructor which populates the Hashmap that maps header names to their
+   * column indices.
    *
-   * @throws DuplicateHeaderException is an exception that gets thrown when there are multiple headers of the same name
+   * @throws DuplicateHeaderException is an exception that gets thrown when there are multiple
+   *                                  headers of the same name
    */
   private void populateHeaderHashmap() throws DuplicateHeaderException {
     for (int i = 0; i < this.data.get(0).size(); i++) {
@@ -57,8 +58,8 @@ public class CSVData {
   }
 
   /**
-   * Search method which takes a String target, which represents the target of the user's query. This method
-   * returns a String which represents the whole row in which the target was found.
+   * Search method which takes a String target, which represents the target of the user's query.
+   * This method returns a String which represents the whole row in which the target was found.
    *
    * @param target - a String representing the element the user is searching for
    * @return a String representing the row in which the target was found
@@ -82,7 +83,8 @@ public class CSVData {
    * except the user can specify a column in which to look for the target.
    *
    * @param target - String representing the target the user is looking for
-   * @param col - String representing the column index or header title the user is narrowing the search to
+   * @param col    - String representing the column index or header title the user is narrowing the
+   *               search to
    * @return String representing the whole row in which the element was found
    */
   public String getTarget(String target, String col) {
@@ -111,8 +113,8 @@ public class CSVData {
   @Override
   public String toString() {
     String formattedCSV = "";
-    for (int i = 0; i < this.data.size(); i++) {
-      formattedCSV += this.data.get(i) + "\n";
+    for (List<String> datum : this.data) {
+      formattedCSV += datum + "\n";
     }
     return formattedCSV;
   }

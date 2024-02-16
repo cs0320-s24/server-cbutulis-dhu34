@@ -1,8 +1,7 @@
-package edu.brown.cs.student.main.Handlers;
+package edu.brown.cs.student.main.handlers;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
-import edu.brown.cs.student.main.Handlers.CSVHandler;
 import java.util.HashMap;
 import java.util.Map;
 import spark.Request;
@@ -16,7 +15,6 @@ import spark.Route;
  * basic GET request with no Json body, and returns a Json object in reply. The responses are more
  * complex, but this should serve as a reference.
  */
-// TODO 2: Check out this Handler. What does it do right now? How is the menu formed (deserialized)?
 public class ViewHandler implements Route {
   private CSVHandler csvHandler;
 
@@ -42,7 +40,6 @@ public class ViewHandler implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
-    // TODO 2: Right now, we only serialize the first soup, let's make it so you can choose which
     // one you want!
     // Get Query parameters, can be used to make your search more specific
     // Initialize a map for our informative response.

@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Init class, which is responsible for sending API queries to the Census Bureau in order to get
- * the list of county codes and state codes in HashMap format, with names mapping to codes.
+ * Init class, which is responsible for sending API queries to the Census Bureau in order to get the
+ * list of county codes and state codes in HashMap format, with names mapping to codes.
  */
 public class Init {
 
   /**
-   * This method returns a list of codes representing counties attained through an API query to the
+   * Method returns a list of codes representing counties attained through an API query to the
    * Census Bureau.
    *
    * @return returns a HashMap of the counties mapped to codes
@@ -31,7 +31,7 @@ public class Init {
   }
 
   /**
-   * This method returns a list of codes representing states attained through an API query to the
+   * Method returns a list of codes representing states attained through an API query to the
    * Census Bureau.
    *
    * @return returns a HashMap of the states mapped to codes

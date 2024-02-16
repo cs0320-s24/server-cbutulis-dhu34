@@ -1,4 +1,4 @@
-package edu.brown.cs.student.main.LocalUser;
+package edu.brown.cs.student.main.localuser;
 
 import java.io.IOException;
 
@@ -11,13 +11,13 @@ public final class Main {
    * @param args An array of command line arguments
    */
   public static void main(String[] args) {
-    new Main(args).run();
+    new Main().run();
   }
 
-  private Main(String[] args) {}
+  private Main() {}
 
   private void run() {
-    REPL repl = new REPL();
+    Repl repl = new Repl();
     try {
       repl.run();
     } catch (IOException e) {

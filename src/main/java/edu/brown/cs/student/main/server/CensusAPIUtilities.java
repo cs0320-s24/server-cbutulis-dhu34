@@ -28,17 +28,17 @@ public class CensusAPIUtilities {
    * @throws IOException if the json is invalid
    */
   public static HashMap<String, String> deserializeStateCodes(String jsonList) throws IOException {
-      List<List<String>> stateCodesList = getMoshiAdapter(jsonList);
+    List<List<String>> stateCodesList = getMoshiAdapter(jsonList);
 
-      HashMap<String, String> deserializedHashMap = new HashMap<>();
+    HashMap<String, String> deserializedHashMap = new HashMap<>();
 
-      // Convert the List into a HashMap
-      for(int i=1; i< stateCodesList.size(); i++) {
-        List<String> curr = stateCodesList.get(i);
-        deserializedHashMap.put(curr.get(0),curr.get(1));
-      }
+    // Convert the List into a HashMap
+    for (int i = 1; i < stateCodesList.size(); i++) {
+      List<String> curr = stateCodesList.get(i);
+      deserializedHashMap.put(curr.get(0), curr.get(1));
+    }
 
-      return deserializedHashMap;
+    return deserializedHashMap;
   }
 
   /**
@@ -49,17 +49,17 @@ public class CensusAPIUtilities {
    * @throws IOException if the json is invalid
    */
   public static HashMap<String, String> deserializeCountyCodes(String jsonList) throws IOException {
-      List<List<String>> countyCodesList = getMoshiAdapter(jsonList);
+    List<List<String>> countyCodesList = getMoshiAdapter(jsonList);
 
-      HashMap<String, String> deserializedHashMap = new HashMap<>();
+    HashMap<String, String> deserializedHashMap = new HashMap<>();
 
-      // Convert the List into a HashMap
-      for(int i=1; i< countyCodesList.size(); i++) {
-        List<String> curr = countyCodesList.get(i);
-        deserializedHashMap.put(curr.get(0),(curr.get(2)));
-      }
+    // Convert the List into a HashMap
+    for (int i = 1; i < countyCodesList.size(); i++) {
+      List<String> curr = countyCodesList.get(i);
+      deserializedHashMap.put(curr.get(0), (curr.get(2)));
+    }
 
-      return deserializedHashMap;
+    return deserializedHashMap;
   }
 
   /**
@@ -93,8 +93,7 @@ public class CensusAPIUtilities {
 
     /* Moshi always throws a standard java.io.IOException if there is an error reading the JSON
     document, or if it is malformed. It throws a JsonDataException if the JSON document is
-    well-formed, but doesn't match the expected format. */
-    catch (IOException e) {
+    well-formed, but doesn't match the expected format. */ catch (IOException e) {
       // In a real system, we wouldn't println like this, but it's useful for demonstration:
       System.err.println("OrderHandler: string wasn't valid JSON.");
       throw e;
@@ -106,13 +105,14 @@ public class CensusAPIUtilities {
   }
 
   /**
-   * Helper method which sends an API request given a
-   * @param get
-   * @param location
-   * @return
-   * @throws URISyntaxException
-   * @throws IOException
-   * @throws InterruptedException
+   * Helper method which sends an API request given a parameter and a location (county or state).
+   *
+   * @param get      the parameter to get
+   * @param location a county or a state
+   * @return returns the body of the response; a json
+   * @throws URISyntaxException   if the given string violates RFC 2396
+   * @throws IOException          if HttpRequest cannot be sent
+   * @throws InterruptedException if sending of HttpRequest is interrupted
    */
   public static String sendRequest(String get, String location)
       throws URISyntaxException, IOException, InterruptedException {

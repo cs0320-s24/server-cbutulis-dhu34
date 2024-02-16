@@ -1,7 +1,6 @@
-package edu.brown.cs.student.main.Parsing;
+package edu.brown.cs.student.main.parsing;
 
-import edu.brown.cs.student.main.Exceptions.FactoryFailureException;
-
+import edu.brown.cs.student.main.exceptions.FactoryFailureException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -10,21 +9,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * This is the parser class, which is responsible for converting the CSV into Lists of generic
+ * type using a strategy pattern.
+ */
 public class Parser {
-  private BufferedReader br;
-  private List<String> stringList;
-  private List<List<String>> rowList;
-  private List<Object> parsedList;
-  private CreatorFromRow<?> rowCreator;
-  private List<Object> malformedList;
+  private final BufferedReader br;
+  private final List<String> stringList;
+  private final List<List<String>> rowList;
+  private final List<Object> parsedList;
+  private final CreatorFromRow<?> rowCreator;
+  private final List<Object> malformedList;
 
   /**
-   * Parser class takes in a raw CSV and converts it into a List of Strings by reading it in and processing it
+   * Parser class takes in a raw CSV and converts it into a List of Strings by reading it in
+   * and processing it.
+   *
    * @param read reader which the user passes in for reading the CSV
    */
   public Parser(Reader read) {
     this.br = new BufferedReader(read);
-    this.stringList = new ArrayList<String>();
+    this.stringList = new ArrayList<>();
     this.rowCreator = new DefaultCreator();
     this.parsedList = new ArrayList<>();
     this.rowList = new ArrayList<>();
@@ -32,14 +37,16 @@ public class Parser {
   }
 
   /**
-   * Alternative constructor for the Parser which also takes in a custom CreatorFromRow which defines
-   * an alternative way of packaging rows into data structures
+   * Alternative constructor for the Parser which also takes in a custom CreatorFromRow which
+   * defines an alternative way of packaging rows into data structures.
+   *
    * @param read Reader class which the user inputs to read the raw CSV
-   * @param creatorFromRow implements CreatorFromRow which packages a row of the CSV into a data structure
+   * @param creatorFromRow implements CreatorFromRow which packages a row of the CSV into a data
+   *                       structure
    */
   public Parser(Reader read, CreatorFromRow creatorFromRow) {
     this.br = new BufferedReader(read);
-    this.stringList = new ArrayList<String>();
+    this.stringList = new ArrayList<>();
     this.rowCreator = creatorFromRow; // this diff
     this.parsedList = new ArrayList<>();
     this.rowList = new ArrayList<>();
@@ -48,11 +55,12 @@ public class Parser {
 
   /**
    * Taken from the TestRegex class in the class repo, takes a line and splits and postprocesses it
-   * for the purposes of parsing a line into a row
+   * for the purposes of parsing a line into a row.
    */
   private static class Processor {
     static final Pattern regexSplitCSVRow =
-        Pattern.compile(",(?=([^\\\"]*\\\"[^\\\"]*\\\")*(?![^\\\"]*\\\"))");
+        Pattern.compile(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+
     /**
      * Elimiate a single instance of leading or trailing double-quote, and replace pairs of double
      * quotes with singles.
@@ -74,12 +82,14 @@ public class Parser {
   }
 
   /**
-   * Takes a given line of the CSV and processes it into a row data object, returning a list of those row objects
+   * Takes a given line of the CSV and processes it into a row data object, returning a list of
+   * those row objects.
    *
    * @param hasHeader boolean specifying whether the CSV has headers
    * @return List of row data objects
    * @throws IOException exception thrown when there is an issue with input
-   * @throws FactoryFailureException exception thrown when there is an issue with making the row objects
+   * @throws FactoryFailureException exception thrown when there is an issue with making the row
+   *         objects
    */
   public List parse(boolean hasHeader) throws IOException, FactoryFailureException {
     // reads every line in the csv
@@ -110,11 +120,11 @@ public class Parser {
         throw new IllegalArgumentException();
       }
     }
-    for (int i = 0; i < this.rowList.size(); i++) {
-      if (this.rowList.get(i).size() == numCols) {
-        this.parsedList.add(this.rowCreator.create(this.rowList.get(i)));
+    for (List<String> strings : this.rowList) {
+      if (strings.size() == numCols) {
+        this.parsedList.add(this.rowCreator.create(strings));
       } else {
-        this.malformedList.add(this.rowCreator.create(this.rowList.get(i)));
+        this.malformedList.add(this.rowCreator.create(strings));
       }
     }
 
@@ -122,7 +132,8 @@ public class Parser {
   }
 
   /**
-   * Helper method for parsing a lien into a row data object
+   * Helper method for parsing a lien into a row data object.
+   *
    * @param line String representing a line of the CSV
    * @return List of Strings representing the row CSV
    */
@@ -135,7 +146,8 @@ public class Parser {
   }
 
   /**
-   * Getter method for getting the list of malformed rows
+   * Getter method for getting the list of malformed rows.
+   *
    * @return list of Objects representing the list of malformed rows
    */
   public List<Object> getMalformedList() {

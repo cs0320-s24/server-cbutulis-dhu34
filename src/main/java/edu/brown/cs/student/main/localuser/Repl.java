@@ -1,24 +1,34 @@
-package edu.brown.cs.student.main.LocalUser;
+package edu.brown.cs.student.main.localuser;
 
-import edu.brown.cs.student.main.CSVDataStorage.CSVData;
-import edu.brown.cs.student.main.Exceptions.DuplicateHeaderException;
-import edu.brown.cs.student.main.Exceptions.FactoryFailureException;
-import edu.brown.cs.student.main.Parsing.Parser;
+import edu.brown.cs.student.main.csvdatastorage.CSVData;
+import edu.brown.cs.student.main.exceptions.DuplicateHeaderException;
+import edu.brown.cs.student.main.exceptions.FactoryFailureException;
+import edu.brown.cs.student.main.parsing.Parser;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-import java.io.*;
+/**
+ * REPL which the user can use to load and parse the CSVs, print them, and search them for
+ * specific targets.
+ */
+public class Repl {
 
-public class REPL {
   private CSVData csv;
   private boolean loaded;
 
   /**
-   * REPL which the user can use to load and parse the CSVs, print them, and search them for specific targets
+   * REPL constructor.
    */
-  public REPL() {}
+  public Repl() {
+  }
 
   /**
-   * Method which runs the basic funtionality of the REPL, querying the user for input, in a continuous while loop.
-   * The user can load a CSV with a file path, print it out, and query it for targets.
+   * Method which runs the basic functionality of the REPL, querying the user for input, in a
+   * continuous while loop. The user can load a CSV with a file path, print it out, and query it for
+   * targets.
    *
    * @throws IOException exception thrown when there is an input error
    */
@@ -52,8 +62,7 @@ public class REPL {
           } else if (args.length >= 2) {
             // make it into three args
             this.search(line);
-          }
-          else {
+          } else {
             System.out.println("Usage: search [target] [optional: | + column index/header]");
           }
           break;
@@ -65,8 +74,9 @@ public class REPL {
   }
 
   /**
-   * Helper method for querying the CSVData object for a particular target, called when the user types the search command
-   * in the REPL
+   * Helper method for querying the CSVData object for a particular target, called when the user
+   * types the search command in the REPL.
+   *
    * @param line the line that represents the user's input
    */
   private void search(String line) {
@@ -79,7 +89,7 @@ public class REPL {
 
       try {
         String searchPrint = this.csv.getTarget(parsedFirstArgs[1], args[1]);
-        if (searchPrint.equals("")) {
+        if (searchPrint.isEmpty()) {
           System.out.println("Target not found!");
         } else {
           System.out.println(searchPrint);
@@ -91,7 +101,7 @@ public class REPL {
       // search the whole thing
       String[] args = line.split(" ");
       String searchPrint = this.csv.getTarget(args[1]);
-      if (searchPrint.equals("")) {
+      if (searchPrint.isEmpty()) {
         System.out.println("Target not found!");
       } else {
         System.out.println(searchPrint);
@@ -100,7 +110,8 @@ public class REPL {
   }
 
   /**
-   * Helper method for loading and parsing the CSV, called when the user types the load command in the REPL
+   * Helper method for loading and parsing the CSV, called when the user types the load command in
+   * the REPL.
    *
    * @param args String[] representing the user's command line input
    */
