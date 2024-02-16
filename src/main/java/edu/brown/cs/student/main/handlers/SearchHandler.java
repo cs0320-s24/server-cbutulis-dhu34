@@ -36,13 +36,24 @@ public class SearchHandler extends Handler implements Route {
   public Object handle(Request request, Response response) {
     // Get Query parameters, can be used to make your search more specific
     String target = request.queryParams("target");
+    String header = request.queryParams("header");
+    String col = request.queryParams("col");
     System.out.println(target);
 
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
 
     // Put the result in the response map
-    responseMap.put("result", this.csvHandler.getCsv().getTarget(target));
+    if(header == null && col == null) {
+      responseMap.put("result", this.csvHandler.getCsv().getTarget(target));
+    }
+    else if(header != null && col == null) {
+      responseMap.put("result", this.csvHandler.getCsv().getTarget(target, header));
+    }
+    else if(header == null) {
+      responseMap.put("result", this.csvHandler.getCsv().getTarget(target, col));
+    }
+
     System.out.println(responseMap);
 
     return new LoadSuccessResponse(responseMap).serialize();
