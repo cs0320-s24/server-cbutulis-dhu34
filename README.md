@@ -21,6 +21,7 @@ TODO:
 -take into account small stuff like Bristol, won't always have a think to match
 -catch the exceptions thrown by datasource
 -add informative error messages in the handlers
+-add informative messages in api responsemaps
 
 Testing Requests:
 http://localhost:3232/broadband?state=California&county=Orange%20County,%20California
