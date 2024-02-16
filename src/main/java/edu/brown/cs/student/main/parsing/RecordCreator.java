@@ -4,7 +4,7 @@ import edu.brown.cs.student.main.exceptions.FactoryFailureException;
 import java.util.List;
 
 /**
- * Class which constructors a record representing a row  from a List of Strings.
+ * Class which constructors a record representing a row from a List of Strings.
  */
 public class RecordCreator implements CreatorFromRow<Record> {
   /**

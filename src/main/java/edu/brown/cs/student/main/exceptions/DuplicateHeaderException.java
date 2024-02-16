@@ -2,7 +2,7 @@ package edu.brown.cs.student.main.exceptions;
 
 /**
  * Exception to throw when there are multiple headers of the same title in a CSV that is being
- * loaded
+ * loaded.
  */
 public class DuplicateHeaderException extends Exception {
 

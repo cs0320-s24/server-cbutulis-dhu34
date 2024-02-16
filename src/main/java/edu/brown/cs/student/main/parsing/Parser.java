@@ -62,7 +62,7 @@ public class Parser {
         Pattern.compile(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))");
 
     /**
-     * Elimiate a single instance of leading or trailing double-quote, and replace pairs of double
+     * Eliminate a single instance of leading or trailing double-quote, and replace pairs of double
      * quotes with singles.
      *
      * @param arg the string to process

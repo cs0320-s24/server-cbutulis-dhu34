@@ -40,7 +40,6 @@ public class SearchHandler implements Route {
    */
   @Override
   public Object handle(Request request, Response response) {
-    // TODO 2: Right now, we only serialize the first soup, let's make it so you can choose which
     // one you want!
     // Get Query parameters, can be used to make your search more specific
     String target = request.queryParams("target");

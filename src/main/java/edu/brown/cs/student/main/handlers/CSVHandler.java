@@ -106,6 +106,11 @@ public class CSVHandler implements Route {
     }
   }
 
+  /**
+   * Returns the csv data
+   *
+   * @return csv data
+   */
   public CSVData getCsv() {
     return csv;
   }

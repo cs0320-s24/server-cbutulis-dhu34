@@ -8,12 +8,12 @@ import java.util.List;
  * @param content the list of strings comprising the row
  */
 public record Row(List<String> content) {
+
   /**
    * Wrapper for the List of Strings representing the row.
    *
    * @param content List of Strings representing the row
    */
-  public Row(List<String> content) {
-    this.content = content;
+  public Row {
   }
 }

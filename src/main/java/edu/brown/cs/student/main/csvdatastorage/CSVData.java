@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Wraps the row List that represents a CSV for easier search functionality
+ * Wraps the row List that represents a CSV for easier search functionality.
  */
 public class CSVData {
 
