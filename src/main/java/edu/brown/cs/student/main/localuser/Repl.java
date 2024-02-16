@@ -12,19 +12,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * REPL which the user can use to load and parse the CSVs, print them, and search them for
- * specific targets.
+ * REPL which the user can use to load and parse the CSVs, print them, and search them for specific
+ * targets.
  */
 public class Repl {
 
   private CSVData csv;
   private boolean loaded;
 
-  /**
-   * REPL constructor.
-   */
-  public Repl() {
-  }
+  /** REPL constructor. */
+  public Repl() {}
 
   /**
    * Method which runs the basic functionality of the REPL, querying the user for input, in a

@@ -6,9 +6,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-/**
- * Handler class for the viewhandler endpoint.
- */
+/** Handler class for the viewhandler endpoint. */
 public class ViewHandler extends Handler implements Route {
   private final CSVHandler csvHandler;
 
@@ -26,7 +24,7 @@ public class ViewHandler extends Handler implements Route {
    * takes in the user's request, parses out its parameters, and then passes them in to instantiate
    * a parser.
    *
-   * @param request  - The user's query request
+   * @param request - The user's query request
    * @param response - The response to the user's query
    * @return - the responseMap, a Map between strings and objects containing the API's response
    */

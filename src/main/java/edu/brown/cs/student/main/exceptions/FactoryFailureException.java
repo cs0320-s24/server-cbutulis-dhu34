@@ -15,7 +15,7 @@ public class FactoryFailureException extends Exception {
    * Exception thrown when there is an error in creating an object from a row.
    *
    * @param message message containing information about the exception
-   * @param row     the row that was being turned into a row data object
+   * @param row the row that was being turned into a row data object
    */
   public FactoryFailureException(String message, List<String> row) {
     super(message);

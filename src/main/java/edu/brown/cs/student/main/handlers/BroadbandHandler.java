@@ -1,6 +1,7 @@
 package edu.brown.cs.student.main.handlers;
 
 import edu.brown.cs.student.main.datasource.CachedDatasource;
+import edu.brown.cs.student.main.datasource.ApiDatasource;
 import edu.brown.cs.student.main.datasource.Datasource;
 import edu.brown.cs.student.main.server.CensusAPIUtilities;
 import edu.brown.cs.student.main.server.Init;
@@ -16,9 +17,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-/**
- * Handler class from the broadband endpoint.
- */
+/** Handler class from the broadband endpoint. */
 public class BroadbandHandler extends Handler implements Route {
 
   private HashMap<String, String> stateCodes;
@@ -26,11 +25,9 @@ public class BroadbandHandler extends Handler implements Route {
   private final CachedDatasource datasource;
   private String errorMsg;
 
-  /**
-   * Default constructor for the BroadbandHandler. Takes no arguments.
-   */
-  public BroadbandHandler() {
-    this.datasource = new CachedDatasource(new Datasource());
+  /** Default constructor for the BroadbandHandler. Takes no arguments. */
+  public BroadbandHandler(Datasource datasource) {
+    this.datasource = new CachedDatasource(datasource);
     try {
       this.stateCodes = Init.getStateCodes();
       this.countyCodes = Init.getCountyCodes();
@@ -46,7 +43,7 @@ public class BroadbandHandler extends Handler implements Route {
    * deserializes it to format the JSON, puts it in a response map, then appends a time stamp onto
    * the response map. This map of the responses is then returned.
    *
-   * @param request  - The user's query request
+   * @param request - The user's query request
    * @param response - The response to the user's query
    * @return - the responseMap, a Map between strings and objects containing the API's response
    */

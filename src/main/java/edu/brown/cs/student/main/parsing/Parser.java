@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * This is the parser class, which is responsible for converting the CSV into Lists of generic
- * type using a strategy pattern.
+ * This is the parser class, which is responsible for converting the CSV into Lists of generic type
+ * using a strategy pattern.
  */
 public class Parser<T> {
   private final BufferedReader br;
@@ -22,12 +22,12 @@ public class Parser<T> {
   private final List<Object> malformedList;
 
   /**
-   * Constructor for the Parser which also takes in a custom CreatorFromRow which
-   * defines an alternative way of packaging rows into data structures.
+   * Constructor for the Parser which also takes in a custom CreatorFromRow which defines an
+   * alternative way of packaging rows into data structures.
    *
    * @param read Reader class which the user inputs to read the raw CSV
    * @param creatorFromRow implements CreatorFromRow which packages a row of the CSV into a data
-   *                       structure
+   *     structure
    */
   public Parser(Reader read, CreatorFromRow<T> creatorFromRow) {
     this.br = new BufferedReader(read);
@@ -43,8 +43,7 @@ public class Parser<T> {
    * for the purposes of parsing a line into a row.
    */
   private static class Processor {
-    static final Pattern regexSplitCSVRow =
-        Pattern.compile(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+    static final Pattern regexSplitCSVRow = Pattern.compile(",(?=([^\"]*\"[^\"]*\")*(?![^\"]*\"))");
 
     /**
      * Eliminate a single instance of leading or trailing double-quote, and replace pairs of double
@@ -74,7 +73,7 @@ public class Parser<T> {
    * @return List of row data objects
    * @throws IOException exception thrown when there is an issue with input
    * @throws FactoryFailureException exception thrown when there is an issue with making the row
-   *         objects
+   *     objects
    */
   public List<T> parse(boolean hasHeader) throws IOException, FactoryFailureException {
     // reads every line in the csv

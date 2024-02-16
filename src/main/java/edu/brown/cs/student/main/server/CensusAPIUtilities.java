@@ -92,21 +92,26 @@ public class CensusAPIUtilities {
   /**
    * Helper method which sends an API request given a parameter and a location (county or state).
    *
-   * @param get      the parameter to get
+   * @param get the parameter to get
    * @param location a county or a state
    * @return returns the body of the response; a json
-   * @throws URISyntaxException   if the given string violates RFC 2396
-   * @throws IOException          if HttpRequest cannot be sent
+   * @throws URISyntaxException if the given string violates RFC 2396
+   * @throws IOException if HttpRequest cannot be sent
    * @throws InterruptedException if sending of HttpRequest is interrupted
    */
   public static String sendRequest(String get, String location)
       throws URISyntaxException, IOException, InterruptedException {
-    HttpRequest buildCensusApiRequest = HttpRequest.newBuilder()
-        .uri(new URI("https://api.census.gov/data/2010/dec/sf1?get=" + get + "&for=" + location))
-        .GET().build();
+    HttpRequest buildCensusApiRequest =
+        HttpRequest.newBuilder()
+            .uri(
+                new URI("https://api.census.gov/data/2010/dec/sf1?get=" + get + "&for=" + location))
+            .GET()
+            .build();
     // Send that API request then store the response in this variable. Note the generic type.
-    HttpResponse<String> sentCensusApiResponse = HttpClient.newBuilder().build()
-        .send(buildCensusApiRequest, HttpResponse.BodyHandlers.ofString());
+    HttpResponse<String> sentCensusApiResponse =
+        HttpClient.newBuilder()
+            .build()
+            .send(buildCensusApiRequest, HttpResponse.BodyHandlers.ofString());
 
     return sentCensusApiResponse.body();
   }

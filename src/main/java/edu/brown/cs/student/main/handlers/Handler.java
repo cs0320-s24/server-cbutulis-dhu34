@@ -4,9 +4,7 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import java.util.Map;
 
-/**
- * Abstract class to contain the success and failure response loaders.
- */
+/** Abstract class to contain the success and failure response loaders. */
 public abstract class Handler {
 
   /**
@@ -51,9 +49,7 @@ public abstract class Handler {
    */
   public record LoadFailureResponse(String responseType, String response) {
 
-    /**
-     * Constructor for LoadFailureResponse.
-     */
+    /** Constructor for LoadFailureResponse. */
     public LoadFailureResponse(String error) {
       this("error", error);
     }

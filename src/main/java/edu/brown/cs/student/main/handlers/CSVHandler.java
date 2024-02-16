@@ -13,9 +13,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-/**
- * Handler class for the loadCSV endpoint.
- */
+/** Handler class for the loadCSV endpoint. */
 public class CSVHandler extends Handler implements Route {
 
   private CSVData csv;
@@ -25,7 +23,7 @@ public class CSVHandler extends Handler implements Route {
    * takes in the user's request, parses out its parameters, and then passes them in to instantiate
    * a parser.
    *
-   * @param request  - The user's query request
+   * @param request - The user's query request
    * @param response - The response to the user's query
    * @return - the responseMap, a Map between strings and objects containing the API's response
    */

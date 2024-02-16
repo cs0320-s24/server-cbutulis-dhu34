@@ -4,9 +4,7 @@ import edu.brown.cs.student.main.exceptions.DuplicateHeaderException;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Wraps the row List that represents a CSV for easier search functionality.
- */
+/** Wraps the row List that represents a CSV for easier search functionality. */
 public class CSVData {
 
   private final List<List<String>> data;
@@ -19,9 +17,9 @@ public class CSVData {
    * field which represents the number of columns in the CSV.
    *
    * @param rawData a List of Lists of Strings representing the raw parsed CSV
-   * @param header  a boolean which specifies whether the CSV has headers
+   * @param header a boolean which specifies whether the CSV has headers
    * @throws DuplicateHeaderException is an exception that gets thrown when there are multiples
-   *                                  headers of the same name
+   *     headers of the same name
    */
   public CSVData(List<List<String>> rawData, boolean header) throws DuplicateHeaderException {
     // assumption that all objects are strings, if using the REPL they're using default
@@ -49,7 +47,7 @@ public class CSVData {
    * column indices.
    *
    * @throws DuplicateHeaderException is an exception that gets thrown when there are multiple
-   *                                  headers of the same name
+   *     headers of the same name
    */
   private void populateHeaderHashmap() throws DuplicateHeaderException {
     for (int i = 0; i < this.data.get(0).size(); i++) {
@@ -86,8 +84,8 @@ public class CSVData {
    * except the user can specify a column in which to look for the target.
    *
    * @param target - String representing the target the user is looking for
-   * @param col    - String representing the column index or header title the user is narrowing the
-   *               search to
+   * @param col - String representing the column index or header title the user is narrowing the
+   *     search to
    * @return String representing the whole row in which the element was found
    */
   public String getTarget(String target, String col) {

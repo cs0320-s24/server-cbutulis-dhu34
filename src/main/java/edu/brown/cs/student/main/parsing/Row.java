@@ -14,6 +14,5 @@ public record Row(List<String> content) {
    *
    * @param content List of Strings representing the row
    */
-  public Row {
-  }
+  public Row {}
 }

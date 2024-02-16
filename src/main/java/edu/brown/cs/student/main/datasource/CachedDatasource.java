@@ -20,18 +20,20 @@ public class CachedDatasource {
    *
    * @param datasource - the DataSource to wrap
    */
-  public CachedDatasource(final Datasource datasource) {
-    this.cache = CacheBuilder.newBuilder()
-        .maximumSize(50)
-        .expireAfterWrite(20, TimeUnit.MINUTES)
-        .recordStats()
-        .build(new CacheLoader<>() {
-          @Override
-          public String load(List<String> params) throws Exception {
-            System.out.println("called load for params: " + params);
-            return datasource.sendRequest(params);
-          }
-        });
+  public CachedDatasource(Datasource datasource) {
+    this.cache =
+        CacheBuilder.newBuilder()
+            .maximumSize(50)
+            .expireAfterWrite(20, TimeUnit.MINUTES)
+            .recordStats()
+            .build(
+                new CacheLoader<>() {
+                  @Override
+                  public String load(List<String> params) throws Exception {
+                    System.out.println("called load for params: " + params);
+                    return datasource.sendRequest(params);
+                  }
+                });
   }
 
   /**
@@ -39,21 +41,23 @@ public class CachedDatasource {
    * cache's size and how long it should wait before clearing contents.
    *
    * @param datasource - the DataSource to wrap
-   * @param maxSize    - the maximum size of the cache
+   * @param maxSize - the maximum size of the cache
    * @param minToExpel - time after an element is added after which to clear it from the cache
    */
-  public CachedDatasource(final Datasource datasource, int maxSize, int minToExpel) {
-    this.cache = CacheBuilder.newBuilder()
-        .maximumSize(maxSize)
-        .expireAfterWrite(minToExpel, TimeUnit.MINUTES)
-        .recordStats()
-        .build(new CacheLoader<>() {
-          @Override
-          public String load(List<String> params) throws Exception {
-            System.out.println("called load for params: " + params);
-            return datasource.sendRequest(params);
-          }
-        });
+  public CachedDatasource(final ApiDatasource datasource, int maxSize, int minToExpel) {
+    this.cache =
+        CacheBuilder.newBuilder()
+            .maximumSize(maxSize)
+            .expireAfterWrite(minToExpel, TimeUnit.MINUTES)
+            .recordStats()
+            .build(
+                new CacheLoader<>() {
+                  @Override
+                  public String load(List<String> params) throws Exception {
+                    System.out.println("called load for params: " + params);
+                    return datasource.sendRequest(params);
+                  }
+                });
   }
 
   /**

@@ -3,9 +3,7 @@ package edu.brown.cs.student.main.parsing;
 import edu.brown.cs.student.main.exceptions.FactoryFailureException;
 import java.util.List;
 
-/**
- * Creates a list of strings from the given row (default creator).
- */
+/** Creates a list of strings from the given row (default creator). */
 public class DefaultCreator implements CreatorFromRow<List<String>> {
   /**
    * Class which represents the default creator for a row which implements the CreatorFromRow class.
