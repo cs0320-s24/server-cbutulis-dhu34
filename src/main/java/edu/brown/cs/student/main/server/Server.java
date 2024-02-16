@@ -65,7 +65,7 @@ public class Server {
     Spark.get("searchcsv", new SearchHandler(csvHandler));
     Spark.get("viewcsv", new ViewHandler(csvHandler));
 //    Spark.get("broadband", new BroadbandHandler());
-    Spark.get("broadband", new CachedHandler(new BroadbandHandler()));
+    Spark.get("broadband", new BroadbandHandler());
 
 //    System.out.println(Init.getCountyCodes());
 
