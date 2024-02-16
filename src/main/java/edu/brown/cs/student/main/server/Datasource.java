@@ -7,10 +7,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Datasource {
 
-    public String sendRequest(LinkedList<String> params) throws URISyntaxException, IOException, InterruptedException {
+    public String sendRequest(List<String> params) throws URISyntaxException, IOException, InterruptedException {
         // 0 = county, 1 = state
         String county = params.get(0);
         String state = params.get(1);

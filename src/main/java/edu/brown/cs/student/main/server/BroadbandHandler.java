@@ -1,6 +1,7 @@
 package edu.brown.cs.student.main.server;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -17,10 +18,12 @@ import java.time.LocalDateTime;
 public class BroadbandHandler implements Route {
     private HashMap<String, String> stateCodes;
     private HashMap<String, String> countyCodes;
+    private CachedDatasource datasource;
 
     public BroadbandHandler() {
         this.stateCodes = Init.getStateCodes();
         this.countyCodes = Init.getCountyCodes();
+        this.datasource = new CachedDatasource(new Datasource());
     }
 
     @Override
@@ -36,12 +39,11 @@ public class BroadbandHandler implements Route {
         try {
             // Sends a request to the API and receives JSON back
 //            Datasource datasource = new Datasource();
-            CachedDatasource datasource = new CachedDatasource(new Datasource());
 
-            LinkedList<String> params = new LinkedList<String>();
+            ArrayList<String> params = new ArrayList<>();
             params.add(countyCode);
             params.add(stateCode);
-            String broadbandJson = datasource.sendRequest(params);
+            String broadbandJson = this.datasource.sendRequest(params);
 
             List<List<String>> result = CensusAPIUtilities.deserializeBroadbandInfo(broadbandJson);
             result.get(0).set(0, "broadband access");
