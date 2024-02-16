@@ -38,21 +38,17 @@ public abstract class Handler {
         JsonAdapter<LoadSuccessResponse> adapter = moshi.adapter(LoadSuccessResponse.class);
         return adapter.toJson(this);
       } catch (Exception e) {
-        // For debugging purposes, show in the console _why_ this fails
-        // Otherwise we'll just get an error 500 from the API in integration
-        // testing.
-        e.printStackTrace();
-        throw e;
+        return "Error Serializing LoadSuccessResponse";
       }
     }
   }
 
   /**
-   * Response object to send if someone requested soup from an empty Menu.
+   * Response object to send if a call to handle() failed
    *
    * @param responseType the type of response
    */
-  public record LoadFailureResponse(String responseType, String error) {
+  public record LoadFailureResponse(String responseType, String response) {
 
     /**
      * Constructor for LoadFailureResponse.

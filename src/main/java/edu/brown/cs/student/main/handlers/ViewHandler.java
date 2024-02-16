@@ -36,7 +36,9 @@ public class ViewHandler extends Handler implements Route {
     // Initialize a map for our informative response.
     Map<String, Object> responseMap = new HashMap<>();
 
-    // Iterate through the soups in the menu and return the first one
+    if(this.csvHandler.getCsv() == null) {
+      return new LoadFailureResponse("No File Loaded").serialize();
+    }
     responseMap.put("result", this.csvHandler.getCsv().toString());
     System.out.println(responseMap);
     return new CSVHandler.LoadSuccessResponse(responseMap).serialize();

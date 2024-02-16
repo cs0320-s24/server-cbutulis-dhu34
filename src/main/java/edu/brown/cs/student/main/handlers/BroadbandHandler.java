@@ -2,8 +2,6 @@ package edu.brown.cs.student.main.handlers;
 
 import edu.brown.cs.student.main.datasource.CachedDatasource;
 import edu.brown.cs.student.main.datasource.Datasource;
-import edu.brown.cs.student.main.handlers.Handler.LoadFailureResponse;
-import edu.brown.cs.student.main.handlers.Handler.LoadSuccessResponse;
 import edu.brown.cs.student.main.server.CensusAPIUtilities;
 import edu.brown.cs.student.main.server.Init;
 import java.io.IOException;
@@ -21,7 +19,7 @@ import spark.Route;
 /**
  * Handler class from the broadband endpoint.
  */
-public class BroadbandHandler implements Route {
+public class BroadbandHandler extends Handler implements Route {
 
   private HashMap<String, String> stateCodes;
   private HashMap<String, String> countyCodes;
