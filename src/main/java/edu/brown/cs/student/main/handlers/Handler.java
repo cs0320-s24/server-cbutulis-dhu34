@@ -17,11 +17,18 @@ public abstract class Handler {
    */
   public record LoadSuccessResponse(String responseType, Map<String, Object> responseMap) {
 
+    /**
+     * LoadSuccessResponse Constructor.
+     *
+     * @param responseMap
+     */
     public LoadSuccessResponse(Map<String, Object> responseMap) {
       this("success", responseMap);
     }
 
     /**
+     * Serializes the LoadSuccessResponse to display on web page.
+     *
      * @return this response, serialized as Json
      */
     String serialize() {
@@ -42,15 +49,22 @@ public abstract class Handler {
 
   /**
    * Response object to send if someone requested soup from an empty Menu.
+   *
+   * @param responseType the type of response
    */
-  public record LoadFailureResponse(String response_type) {
+  public record LoadFailureResponse(String responseType) {
 
+    /**
+     * Constructor for LoadFailureResponse.
+     */
     public LoadFailureResponse() {
       this("error");
     }
 
     /**
-     * @return this response, serialized as Json
+     * Serializes the LoadFailureResponse to display on web page.
+     *
+     * @return this response, serialized as json
      */
     String serialize() {
       Moshi moshi = new Moshi.Builder().build();
