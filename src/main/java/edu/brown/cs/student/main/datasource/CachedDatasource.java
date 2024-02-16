@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  * passing in a Datasource OR passing in a Datasource, the max size of the cache, and the number of
  * minutes the cache is meant to wait for each entry before clearing the entry.
  */
-public class CachedDatasource {
+public class CachedDatasource implements Datasource {
 
   private final LoadingCache<List<String>, String> cache;
 
