@@ -26,7 +26,6 @@ import spark.Spark;
 public class TestBroadbandHandler {
   @BeforeAll
   public static void setup_before_everything() {
-    Spark.port(3232);
     Logger.getLogger("").setLevel(Level.WARNING); // empty name = root logger
   }
 

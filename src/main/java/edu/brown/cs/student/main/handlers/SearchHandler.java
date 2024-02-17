@@ -52,8 +52,6 @@ public class SearchHandler extends Handler implements Route {
       responseMap.put("result", this.csvHandler.getCsv().getTarget(target, col));
     }
 
-    System.out.println(responseMap);
-
     return new LoadSuccessResponse(responseMap).serialize();
   }
 }
