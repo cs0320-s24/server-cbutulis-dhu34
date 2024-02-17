@@ -42,7 +42,7 @@ public class CSVHandler extends Handler implements Route {
 
       return new LoadSuccessResponse(responseMap).serialize();
     } catch (DuplicateHeaderException | IOException | FactoryFailureException e) {
-      return new LoadFailureResponse(e.getMessage()).serialize();
+      return new LoadFailureResponse("error_datasource").serialize();
     }
   }
 

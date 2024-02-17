@@ -51,7 +51,7 @@ public class BroadbandHandler extends Handler implements Route {
 
     // Check if the initial queries of state and county codes generated an error
     if (this.errorMsg != null) {
-      return new LoadFailureResponse(this.errorMsg);
+      return new LoadFailureResponse("error_bad_json");
     }
 
     String stateName = request.queryParams("state");
@@ -80,7 +80,7 @@ public class BroadbandHandler extends Handler implements Route {
       responseMap.put("timestamp", dtf.format(now));
       return new LoadSuccessResponse(responseMap).serialize();
     } catch (Exception e) {
-      return new LoadFailureResponse(e.getMessage()).serialize();
+      return new LoadFailureResponse("error_bad_request").serialize();
     }
   }
 }

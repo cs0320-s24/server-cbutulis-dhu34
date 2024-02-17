@@ -41,7 +41,7 @@ public class SearchHandler extends Handler implements Route {
     Map<String, Object> responseMap = new HashMap<>();
 
     if (this.csvHandler.getCsv() == null) {
-      return new LoadFailureResponse("No CSV has been loaded").serialize();
+      return new LoadFailureResponse("error_datasource").serialize();
     }
     // Put the result in the response map
     if (header == null && col == null) {

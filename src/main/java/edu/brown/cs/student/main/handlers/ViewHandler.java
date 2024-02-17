@@ -34,7 +34,7 @@ public class ViewHandler extends Handler implements Route {
     Map<String, Object> responseMap = new HashMap<>();
 
     if (this.csvHandler.getCsv() == null) {
-      return new LoadFailureResponse("No File Loaded").serialize();
+      return new LoadFailureResponse("error_datasource").serialize();
     }
     responseMap.put("result", this.csvHandler.getCsv().toString());
     System.out.println(responseMap);
