@@ -1,20 +1,21 @@
 package edu.brown.cs.student.main;
 
-import com.google.common.cache.CacheStats;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.squareup.moshi.Moshi;
 import edu.brown.cs.student.main.datasource.ApiDatasource;
 import edu.brown.cs.student.main.datasource.CachedDatasource;
 import edu.brown.cs.student.main.datasource.Datasource;
 import edu.brown.cs.student.main.datasource.MockDataSource;
 import edu.brown.cs.student.main.handlers.BroadbandHandler;
+import edu.brown.cs.student.main.handlers.Handler;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import edu.brown.cs.student.main.handlers.Handler;
 import okio.Buffer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,13 +23,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import spark.Spark;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class TestBroadbandHandler {
   @BeforeAll
   public static void setup_before_everything() {
-    Spark.port(0);
+    Spark.port(3232);
     Logger.getLogger("").setLevel(Level.WARNING); // empty name = root logger
   }
 
@@ -76,32 +74,43 @@ public class TestBroadbandHandler {
     Spark.get("broadband", new BroadbandHandler(new CachedDatasource(new ApiDatasource())));
 
     HttpURLConnection clientConnection =
-            tryRequest("broadband?state=California&county=Orange%20County,%20California");
+        tryRequest("broadband?state=California&county=Orange%20County,%20California");
     assertEquals(200, clientConnection.getResponseCode());
 
     Moshi moshi = new Moshi.Builder().build();
-    Handler.LoadSuccessResponse response = moshi.adapter(Handler.LoadSuccessResponse.class)
+    Handler.LoadSuccessResponse response =
+        moshi
+            .adapter(Handler.LoadSuccessResponse.class)
             .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
     assert response != null;
-    assertTrue(response.toString().startsWith("LoadSuccessResponse[responseType=success, responseMap={result=[[broadband access, state, county], [93.0%, California, Orange County, California]]"));
+    assertTrue(
+        response
+            .toString()
+            .startsWith(
+                "LoadSuccessResponse[responseType=success, responseMap={result=[[broadband access, state, county], [93.0%, California, Orange County, California]]"));
     clientConnection.disconnect();
   }
 
   @Test
   public void testMocked() throws IOException {
     HttpURLConnection clientConnection =
-            tryRequest("broadbandmock?state=Massachusetts&county=Orange%20County,%20California");
+        tryRequest("broadbandmock?state=Massachusetts&county=Orange%20County,%20California");
     assertEquals(200, clientConnection.getResponseCode());
 
     Moshi moshi = new Moshi.Builder().build();
-    Handler.LoadSuccessResponse response = moshi.adapter(Handler.LoadSuccessResponse.class)
+    Handler.LoadSuccessResponse response =
+        moshi
+            .adapter(Handler.LoadSuccessResponse.class)
             .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
     assert response != null;
     System.out.println(response);
-    assertTrue(response.toString().startsWith(
-            "LoadSuccessResponse[responseType=success, responseMap={result=[[broadband access, S2802_C03_022E, state, county], [Orange County, California%, Massachusetts, Orange County, California, 059]]"));
+    assertTrue(
+        response
+            .toString()
+            .startsWith(
+                "LoadSuccessResponse[responseType=success, responseMap={result=[[broadband access, S2802_C03_022E, state, county], [Orange County, California%, Massachusetts, Orange County, California, 059]]"));
     clientConnection.disconnect();
   }
 
@@ -111,31 +120,28 @@ public class TestBroadbandHandler {
     Spark.get("broadband", new BroadbandHandler(datasource));
 
     HttpURLConnection clientConnection =
-            tryRequest("broadband?state=California&county=Orange%20County,%20California");
+        tryRequest("broadband?state=California&county=Orange%20County,%20California");
     assertEquals(200, clientConnection.getResponseCode());
     Moshi moshi = new Moshi.Builder().build();
-    Handler.LoadSuccessResponse response = moshi.adapter(Handler.LoadSuccessResponse.class)
+    Handler.LoadSuccessResponse response =
+        moshi
+            .adapter(Handler.LoadSuccessResponse.class)
             .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
+
     System.out.println(datasource.getCacheStats());
 
-//    System.out.println(response);
-//    System.out.println(datasource.getCacheStats());
     TimeUnit.SECONDS.sleep(3);
 
     clientConnection =
-            tryRequest("broadband?state=California&county=Orange%20County,%20California");
-    response = moshi.adapter(Handler.LoadSuccessResponse.class)
+        tryRequest("broadband?state=California&county=Orange%20County,%20California");
+    response =
+        moshi
+            .adapter(Handler.LoadSuccessResponse.class)
             .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
-//    System.out.println(response);
     System.out.println(datasource.getCacheStats());
+
     assertEquals(200, clientConnection.getResponseCode());
-    Handler.LoadSuccessResponse response1 = moshi.adapter(Handler.LoadSuccessResponse.class)
-            .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
-
-//    System.out.println(response);
-
-//    System.out.println(datasource.getCacheStats());
 
     clientConnection.disconnect();
   }
@@ -145,16 +151,21 @@ public class TestBroadbandHandler {
     Spark.get("broadband", new BroadbandHandler(new CachedDatasource(new ApiDatasource())));
 
     HttpURLConnection clientConnection =
-            tryRequest("broadband?state=California&county=Blue%20County,%20California");
+        tryRequest("broadband?state=California&county=Blue%20County,%20California");
     assertEquals(200, clientConnection.getResponseCode());
 
     Moshi moshi = new Moshi.Builder().build();
-    Handler.LoadSuccessResponse response = moshi.adapter(Handler.LoadSuccessResponse.class)
+    Handler.LoadSuccessResponse response =
+        moshi
+            .adapter(Handler.LoadSuccessResponse.class)
             .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
     assert response != null;
     System.out.println(response);
-    assertTrue(response.toString().startsWith("LoadSuccessResponse[responseType=error, responseMap=null]"));
+    assertTrue(
+        response
+            .toString()
+            .startsWith("LoadSuccessResponse[responseType=error, responseMap=null]"));
     clientConnection.disconnect();
   }
 }

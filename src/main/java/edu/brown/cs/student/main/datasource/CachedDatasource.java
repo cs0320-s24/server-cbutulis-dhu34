@@ -60,8 +60,8 @@ public class CachedDatasource implements Datasource {
   }
 
   /**
-   * Testing method that provides detailed cache stats information to test that the cache
-   * is working properly.
+   * Testing method that provides detailed cache stats information to test that the cache is working
+   * properly.
    *
    * @return the cache stats provided by GUAVA
    */

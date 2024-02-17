@@ -8,8 +8,9 @@ public class MockDataSource implements Datasource {
   private final String californiaQuery;
 
   public MockDataSource() {
-    this.californiaQuery = "[[\"NAME\",\"S2802_C03_022E\",\"state\",\"county\"],\n"
-        + "[\"Orange County, California\",\"93.0\",\"06\",\"059\"]]";
+    this.californiaQuery =
+        "[[\"NAME\",\"S2802_C03_022E\",\"state\",\"county\"],\n"
+            + "[\"Orange County, California\",\"93.0\",\"06\",\"059\"]]";
   }
 
   /**
