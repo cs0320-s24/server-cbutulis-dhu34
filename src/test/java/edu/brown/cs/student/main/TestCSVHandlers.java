@@ -279,4 +279,24 @@ public class TestCSVHandlers {
         response.toString());
     clientConnection.disconnect();
   }
+
+  @Test
+  public void testSearchwithoutLoad() throws IOException {
+    HttpURLConnection clientConnection = tryRequest("searchcsv?target=Black");
+    assertEquals(200, clientConnection.getResponseCode());
+
+    // We'll use okio's Buffer class here
+    Moshi moshi = new Moshi.Builder().build();
+    ViewHandler.LoadSuccessResponse response =
+        moshi
+            .adapter(ViewHandler.LoadSuccessResponse.class)
+            .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
+
+    //        System.out.println(response);
+    assert response != null;
+    assertEquals(
+        "LoadSuccessResponse[responseType=error, responseMap=null]",
+        response.toString());
+    clientConnection.disconnect();
+  }
 }

@@ -127,20 +127,16 @@ public class TestBroadbandHandler {
             .adapter(Handler.LoadSuccessResponse.class)
             .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
-    System.out.println(datasource.getCacheStats());
-
-    TimeUnit.SECONDS.sleep(3);
 
     clientConnection =
         tryRequest("broadband?state=California&county=Orange%20County,%20California");
-    response =
+    Handler.LoadSuccessResponse response1 =
         moshi
             .adapter(Handler.LoadSuccessResponse.class)
             .fromJson(new Buffer().readFrom(clientConnection.getInputStream()));
 
-    System.out.println(datasource.getCacheStats());
 
-    assertEquals(200, clientConnection.getResponseCode());
+    assertEquals(response1, response);
 
     clientConnection.disconnect();
   }
